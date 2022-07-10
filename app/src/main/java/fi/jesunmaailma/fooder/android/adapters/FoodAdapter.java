@@ -1,34 +1,27 @@
 package fi.jesunmaailma.fooder.android.adapters;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.List;
 
 import fi.jesunmaailma.fooder.android.R;
 import fi.jesunmaailma.fooder.android.models.Food;
+import fi.jesunmaailma.fooder.android.ui.activities.FoodDetails;
 
 public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
-    Context context;
     List<Food> foodList;
     View view;
-    BottomSheetDialog dialog;
 
     Food food;
 
-    public FoodAdapter(Context context, List<Food> foodList) {
-        this.context = context;
+    public FoodAdapter(List<Food> foodList) {
         this.foodList = foodList;
     }
 
@@ -49,44 +42,11 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createDialog(
-                        context,
-                        food.getName(),
-                        food.getPrice(),
-                        food.getDescription()
-                );
-                dialog.show();
+                Intent i = new Intent(v.getContext(), FoodDetails.class);
+                i.putExtra("food", food);
+                v.getContext().startActivity(i);
             }
         });
-    }
-
-    private void createDialog(Context context, String name, double price, String description) {
-        dialog = new BottomSheetDialog(context);
-        View view = LayoutInflater.from(context)
-                .inflate(R.layout.bottom_dialog, null, false);
-
-        ImageView ivClose = view.findViewById(R.id.iv_close);
-        TextView tvFoodDetails = view.findViewById(R.id.tv_food_details);
-        TextView tvDescription = view.findViewById(R.id.tv_food_description);
-
-        tvFoodDetails.setText(
-                String.format(
-                        "%s · %s€",
-                        name,
-                        price
-                )
-        );
-
-        tvDescription.setText(description);
-
-        ivClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.setContentView(view);
     }
 
     @Override

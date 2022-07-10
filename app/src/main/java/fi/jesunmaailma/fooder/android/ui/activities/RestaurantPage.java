@@ -79,7 +79,7 @@ public class RestaurantPage extends AppCompatActivity {
 
         service = new FooderDataService(this);
 
-        foodAdapter = new FoodAdapter(this, foodList);
+        foodAdapter = new FoodAdapter(foodList);
         recyclerView.setAdapter(foodAdapter);
 
         LinearLayoutManager manager = new LinearLayoutManager(this);
