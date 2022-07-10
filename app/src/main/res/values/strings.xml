@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Fooder</string>
+    <string name="digiruokalista_api_base_url" translatable="false">https://digiruokalista.com/api/v1/</string>
+</resources>
