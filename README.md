@@ -3,7 +3,8 @@ Ruokalistat digitaalisessa muodossa Androidille.
 
 Oletko joskus joutunut selaamaan ravintoloiden Facebook-sivuja löytääkseen sen tietyn ruokalistan ja zoomaamaan toDELLA pieniä ruokalistoja? Nyt on monta huolta vähemmän!
 
-Fooder on uuden sukupolven ruokalistasovellus Androidille, jonka on tehnyt peruskoulunsa päättänyt ja uuteen kouluun menevä [JTG69YT AKA Jesse Keskelä](https://github.com/JTG69YT)
+Fooder on uuden sukupolven ruokalistasovellus Androidille, jonka on tehnyt peruskoulunsa päättänyt ja uuteen kouluun menevä [JTG69YT AKA Jesse Keskelä](https://github.com/JTG69YT).
+
 Sovellus käyttää Digiruokalista.com:n rajapintaa näyttääkseen tietoja sovelluksessa.
 
 ## ⚠️ HUOM! Tärkeää infoa!
