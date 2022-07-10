@@ -13,9 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Fooder.Android.NoActionBar">
         <activity
-            android:name=".ui.activities.CategoryPage"
-            android:exported="true" />
-        <activity
             android:name=".ui.activities.RestaurantPage"
             android:exported="true"
             android:screenOrientation="portrait"

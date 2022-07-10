@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -26,14 +25,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fi.jesunmaailma.fooder.android.R;
-import fi.jesunmaailma.fooder.android.adapters.CategoryAdapter;
-import fi.jesunmaailma.fooder.android.models.Category;
+import fi.jesunmaailma.fooder.android.adapters.FoodAdapter;
+import fi.jesunmaailma.fooder.android.models.Food;
 import fi.jesunmaailma.fooder.android.models.Restaurant;
 import fi.jesunmaailma.fooder.android.services.FooderDataService;
 
 public class RestaurantPage extends AppCompatActivity {
-    public static final String CATEGORY_TAG = "TAG";
-
     ActionBar actionBar;
     Toolbar toolbar;
 
@@ -45,8 +42,8 @@ public class RestaurantPage extends AppCompatActivity {
 
     CoordinatorLayout snackBar;
 
-    List<Category> categoryList;
-    CategoryAdapter categoryAdapter;
+    List<Food> foodList;
+    FoodAdapter foodAdapter;
 
     Restaurant restaurant;
 
@@ -78,12 +75,12 @@ public class RestaurantPage extends AppCompatActivity {
 
         snackBar = findViewById(R.id.snackbar);
 
-        categoryList = new ArrayList<>();
+        foodList = new ArrayList<>();
 
         service = new FooderDataService(this);
 
-        categoryAdapter = new CategoryAdapter(categoryList);
-        recyclerView.setAdapter(categoryAdapter);
+        foodAdapter = new FoodAdapter(this, foodList);
+        recyclerView.setAdapter(foodAdapter);
 
         LinearLayoutManager manager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(manager);
@@ -111,14 +108,12 @@ public class RestaurantPage extends AppCompatActivity {
         service.getRestaurantById(url, new FooderDataService.OnRestaurantByIdDataResponse() {
             @Override
             public void onResponse(JSONObject response) {
-                // Log.d(CATEGORY_TAG, "Data: " + response);
-
                 swipeRefreshLayout.setRefreshing(false);
                 swipeRefreshLayout.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
 
-                categoryList.clear();
+                foodList.clear();
 
                 try {
                     tvRestaurantName.setText(response.getString("nimi"));
@@ -132,18 +127,23 @@ public class RestaurantPage extends AppCompatActivity {
                     );
 
                     JSONObject foodMenuData = response.getJSONObject("ruokalista");
+
                     JSONArray categoriesData = foodMenuData.getJSONArray("kategoriat");
 
                     for (int i = 0; i < categoriesData.length(); i++) {
                         JSONObject categoryData = categoriesData.getJSONObject(i);
+                        JSONArray foodsData = categoryData.getJSONArray("ruuat");
 
-                        Category category = new Category();
+                        JSONObject foodData = foodsData.getJSONObject(0);
 
-                        category.setRestaurantId(response.getInt("id"));
-                        category.setName(categoryData.getString("nimi"));
+                        Food food = new Food();
 
-                        categoryList.add(category);
-                        categoryAdapter.notifyDataSetChanged();
+                        food.setName(foodData.getString("nimi"));
+                        food.setDescription(foodData.getString("kuvaus"));
+                        food.setPrice(foodData.getDouble("hinta"));
+
+                        foodList.add(food);
+                        foodAdapter.notifyDataSetChanged();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -165,7 +165,8 @@ public class RestaurantPage extends AppCompatActivity {
                         recyclerView.setVisibility(View.GONE);
                         getRestaurantById(
                                 getResources().getString(R.string.digiruokalista_api_base_url)
-                                        + "HaeYritys?id=" + restaurant.getId()
+                                        + "HaeYritys?id="
+                                        + restaurant.getId()
                         );
                     }
                 });
