@@ -141,8 +141,14 @@ public class RestaurantPage extends AppCompatActivity {
                         food.setName(foodData.getString("nimi"));
                         food.setDescription(foodData.getString("kuvaus"));
                         food.setPrice(foodData.getDouble("hinta"));
+                        food.setIsFood(foodData.getBoolean("annos"));
 
-                        foodList.add(food);
+                        //Jos ei ole annos, ei lisätä listaan.
+                        //TODO: Luodaan "lisukkeille" oma lista.
+                        if(food.getIsFood()){
+                            foodList.add(food);
+                        }
+
                         foodAdapter.notifyDataSetChanged();
                     }
                 } catch (JSONException e) {
