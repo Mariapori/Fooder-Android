@@ -38,6 +38,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         Restaurant restaurant = restaurantList.get(position);
 
         holder.restaurantName.setText(restaurant.getName());
+        holder.restaurantCity.setText(restaurant.getCity());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,10 +56,12 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView restaurantName;
+        TextView restaurantCity;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             restaurantName = itemView.findViewById(R.id.restaurant_name);
+            restaurantCity = itemView.findViewById(R.id.restaurant_city);
         }
     }
 }
