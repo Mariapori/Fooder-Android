@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
                 restaurantList.clear();
 
-                for (int i = 0; i < response.length(); i++) {
+                for (int i = 0; i <= response.length(); i++) {
                     try {
                         JSONObject restaurantData = response.getJSONObject(i);
 

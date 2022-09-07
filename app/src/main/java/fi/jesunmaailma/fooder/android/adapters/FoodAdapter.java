@@ -43,7 +43,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(), FoodDetails.class);
-                i.putExtra("food", food);
+                i.putExtra("food", foodList.get(position));
                 v.getContext().startActivity(i);
             }
         });
