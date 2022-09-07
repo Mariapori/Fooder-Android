@@ -130,25 +130,29 @@ public class RestaurantPage extends AppCompatActivity {
 
                     JSONArray categoriesData = foodMenuData.getJSONArray("kategoriat");
 
-                    for (int i = 0; i <= categoriesData.length(); i++) {
+                    for (int i = 0; i < categoriesData.length(); i++) {
                         JSONObject categoryData = categoriesData.getJSONObject(i);
                         JSONArray foodsData = categoryData.getJSONArray("ruuat");
-                        for(int ii = 0; ii <= foodsData.length(); ii++){
-                            JSONObject foodData = foodsData.getJSONObject(ii);
+                        try{
+                            for(int ii = 0; ii < foodsData.length(); ii++){
+                                JSONObject foodData = foodsData.getJSONObject(ii);
 
-                            Food food = new Food();
+                                Food food = new Food();
 
-                            food.setName(foodData.getString("nimi"));
-                            food.setDescription(foodData.getString("kuvaus"));
-                            food.setPrice(foodData.getDouble("hinta"));
-                            food.setIsFood(foodData.getBoolean("annos"));
+                                food.setName(foodData.getString("nimi"));
+                                food.setDescription(foodData.getString("kuvaus"));
+                                food.setPrice(foodData.getDouble("hinta"));
+                                food.setIsFood(foodData.getBoolean("annos"));
 
-                            //Jos ei ole annos, ei lisätä listaan.
-                            //TODO: Luodaan "lisukkeille" oma lista.
-                            if(food.getIsFood()){
-                                foodList.add(food);
+                                //Jos ei ole annos, ei lisätä listaan.
+                                //TODO: Luodaan "lisukkeille" oma lista.
+                                if(food.getIsFood()){
+                                    foodList.add(food);
+                                }
+
                             }
-
+                        }catch (JSONException exx){
+                            exx.printStackTrace();
                         }
                         foodAdapter.notifyDataSetChanged();
                     }

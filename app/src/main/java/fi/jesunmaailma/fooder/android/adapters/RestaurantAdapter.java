@@ -43,7 +43,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(), RestaurantPage.class);
-                i.putExtra("restaurant", restaurant);
+                i.putExtra("restaurant", restaurantList.get(position));
                 v.getContext().startActivity(i);
             }
         });
