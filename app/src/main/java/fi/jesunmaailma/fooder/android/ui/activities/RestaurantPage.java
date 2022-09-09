@@ -138,8 +138,9 @@ public class RestaurantPage extends AppCompatActivity {
                                 JSONObject foodData = foodsData.getJSONObject(ii);
 
                                 Food food = new Food();
-
+                                food.setListPos(ii);
                                 food.setName(foodData.getString("nimi"));
+                                food.setCategory(categoryData.getString("nimi"));
                                 food.setDescription(foodData.getString("kuvaus"));
                                 food.setPrice(foodData.getDouble("hinta"));
                                 food.setIsFood(foodData.getBoolean("annos"));
