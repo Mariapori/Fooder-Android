@@ -5,8 +5,10 @@ import java.io.Serializable;
 public class Food implements Serializable {
     public String name;
     public String description;
+    public String category;
     public double price;
     public boolean isFood;
+    public int listPos;
 
     public String getName() {
         return name;
@@ -20,8 +22,24 @@ public class Food implements Serializable {
         this.isFood = isFood;
     }
 
+    public void setCategory(String category){
+        this.category = category;
+    }
+
+    public String getCategory(){
+        return category;
+    }
+
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getListPos() {
+        return listPos;
+    }
+
+    public void setListPos(int listPos) {
+        this.listPos = listPos;
     }
 
     public String getDescription() {

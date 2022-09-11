@@ -133,25 +133,27 @@ public class RestaurantPage extends AppCompatActivity {
                     for (int i = 0; i < categoriesData.length(); i++) {
                         JSONObject categoryData = categoriesData.getJSONObject(i);
                         JSONArray foodsData = categoryData.getJSONArray("ruuat");
-                        try{
-                            for(int ii = 0; ii < foodsData.length(); ii++){
+                        try {
+                            for (int ii = 0; ii < foodsData.length(); ii++) {
                                 JSONObject foodData = foodsData.getJSONObject(ii);
 
                                 Food food = new Food();
 
+                                food.setListPos(ii);
                                 food.setName(foodData.getString("nimi"));
+                                food.setCategory(categoryData.getString("nimi"));
                                 food.setDescription(foodData.getString("kuvaus"));
                                 food.setPrice(foodData.getDouble("hinta"));
                                 food.setIsFood(foodData.getBoolean("annos"));
 
                                 //Jos ei ole annos, ei lisätä listaan.
                                 //TODO: Luodaan "lisukkeille" oma lista.
-                                if(food.getIsFood()){
+                                if (food.getIsFood()) {
                                     foodList.add(food);
                                 }
 
                             }
-                        }catch (JSONException exx){
+                        } catch (JSONException exx) {
                             exx.printStackTrace();
                         }
                         foodAdapter.notifyDataSetChanged();
@@ -165,7 +167,7 @@ public class RestaurantPage extends AppCompatActivity {
             public void onError(String error) {
                 Snackbar snackbar = Snackbar.make(
                         snackBar,
-                        String.format("Virhe:\n%s", error),
+                        String.format("Hupsista!\nSisältöä ei ladattu. Tarkista Internet-yhteys."),
                         Snackbar.LENGTH_INDEFINITE
                 );
                 snackbar.setAction("Päivitä", new View.OnClickListener() {

@@ -38,6 +38,14 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         food = foodList.get(position);
 
+        if(food.getListPos() == 0){
+            holder.categoryName.setEnabled(true);
+            holder.categoryName.setText(food.getCategory());
+        }else{
+            holder.categoryName.setText("");
+            holder.categoryName.setEnabled(false);
+        }
+
         holder.foodName.setText(food.getName());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,10 +64,12 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView foodName;
+        TextView categoryName;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             foodName = itemView.findViewById(R.id.food_name);
+            categoryName = itemView.findViewById(R.id.categoryName);
         }
     }
 }
