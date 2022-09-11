@@ -45,7 +45,6 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
             holder.categoryName.setText("");
             holder.categoryName.setEnabled(false);
         }
-
         holder.foodName.setText(food.getName());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
