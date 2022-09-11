@@ -7,11 +7,7 @@ Fooder on uuden sukupolven ruokalistasovellus Androidille, jonka on tehnyt perus
 
 Sovellus käyttää Digiruokalista.com:n rajapintaa näyttääkseen tietoja sovelluksessa.
 
-## ⚠️ HUOM! Tärkeää infoa!
-Ensimmäinen versio sovelluksesta on nyt julkaistu ja sovellus on erittäin varhaisessa kehitysvaiheessa.
-
-Sovelluksessa ilmenee vääriä tietoja, jos valitset tietyn ruuan ravintolan sivulta.
-
+## 👨‍💻 Yhteistyö
 Pyydän ystävällisesti teiltä yhteistyötä ja apuja tähän projektiin lähettämällä PR:n [tässä GitHub-repossa](https://github.com/JTG69YT/Fooder-Android/pulls) ja kloonaamalla tämän repon ja tehdä muutoksia siihen.
 
 ## 🙏 Krediitit
