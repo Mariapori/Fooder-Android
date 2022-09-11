@@ -5,11 +5,21 @@ import java.io.Serializable;
 public class Food implements Serializable {
     public String name;
     public String description;
+    public String category;
     public double price;
     public boolean isFood;
+    public int listPos;
 
     public String getName() {
         return name;
+    }
+
+    public int getListPos() {
+        return listPos;
+    }
+
+    public void setListPos(int listPos) {
+        this.listPos = listPos;
     }
 
     public boolean getIsFood() {
@@ -18,6 +28,14 @@ public class Food implements Serializable {
 
     public void setIsFood(boolean isFood) {
         this.isFood = isFood;
+    }
+
+    public void setCategory(String category){
+        this.category = category;
+    }
+
+    public String getCategory(){
+        return category;
     }
 
     public void setName(String name) {
@@ -39,4 +57,5 @@ public class Food implements Serializable {
     public void setPrice(double price) {
         this.price = price;
     }
+
 }
