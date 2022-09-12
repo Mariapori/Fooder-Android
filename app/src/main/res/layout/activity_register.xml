@@ -63,7 +63,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/poppins_medium"
-                android:text="Jos sinulla ei ole tiliä, ei hätää!\nVoit luoda sellaisen tässä.\n\nHyödyt tästä tilistä muissa Jesun Maailman digitaalisissa palveluissa.\n\nVidPlayssä käytetään Jesun Maailma -tiliä."
+                android:text="Jos sinulla ei ole tiliä, ei hätää!\nVoit luoda sellaisen tässä.\n\nHyödyt tästä tilistä muissa Jesun Maailman digitaalisissa palveluissa.\n\nFooderissa käytetään Jesun Maailma -tiliä."
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
