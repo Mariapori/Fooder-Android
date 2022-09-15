@@ -1,4 +1,4 @@
-#  Fooder
+# Fooder
 Ruokalistat diginä Androidille.
 
 Oletko joskus joutunut selaamaan ravintoloiden Facebook-sivuja löytääkseen sen tietyn ruokalistan ja zoomaamaan toDELLA pieniä ruokalistoja? Nyt on monta huolta vähemmän!
