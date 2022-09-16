@@ -16,13 +16,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -38,6 +36,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import fi.jesunmaailma.fooder.android.R;
 import fi.jesunmaailma.fooder.android.adapters.RestaurantAdapter;
@@ -62,10 +61,7 @@ public class MainActivity extends AppCompatActivity
     FirebaseFirestore database;
     DocumentReference documentReference;
 
-    LinearLayout authRequiredContainer;
-
     TextView tvHeadline;
-    MaterialButton mbLogin;
 
     Toolbar toolbar;
     DrawerLayout drawer;
@@ -104,8 +100,6 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         tvHeadline = findViewById(R.id.headline);
-        authRequiredContainer = findViewById(R.id.auth_required_container);
-        mbLogin = findViewById(R.id.loginBtn);
 
         drawer = findViewById(R.id.drawer);
         toggle = new ActionBarDrawerToggle(
@@ -121,8 +115,6 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         snackBar = findViewById(R.id.snackbar);
-
-        progressBar.setVisibility(View.VISIBLE);
 
         restaurantList = new ArrayList<>();
 
@@ -146,19 +138,13 @@ public class MainActivity extends AppCompatActivity
         });
 
         if (user == null) {
-            authRequiredContainer.setVisibility(View.VISIBLE);
-            swipeRefreshLayout.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
             rvRestaurantList.setVisibility(View.GONE);
 
-            mbLogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                }
-            });
+            getRestaurants(getResources().getString(R.string.digiruokalista_api_base_url) + "HaeYritykset");
         } else {
-            authRequiredContainer.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
+            rvRestaurantList.setVisibility(View.GONE);
 
             documentReference = database.collection("Users").document(user.getUid());
             documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -176,7 +162,7 @@ public class MainActivity extends AppCompatActivity
                         tvHeadline.setText(
                                 String.format(
                                         "Morjensta pöytään,\n%s!",
-                                        user.getDisplayName()
+                                        getFirstName(Objects.requireNonNull(user.getDisplayName()))
                                 )
                         );
                     }
@@ -184,6 +170,14 @@ public class MainActivity extends AppCompatActivity
             });
             getRestaurants(getResources().getString(R.string.digiruokalista_api_base_url) + "HaeYritykset");
         }
+    }
+
+    public String getFirstName(String fullName) {
+        int index = fullName.lastIndexOf(" ");
+        if (index > -1) {
+            return fullName.substring(0, index);
+        }
+        return fullName;
     }
 
     public void getRestaurants(String url) {

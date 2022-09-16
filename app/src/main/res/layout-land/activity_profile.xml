@@ -33,9 +33,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fontFamily="@font/poppins_medium"
+                android:fontFamily="@font/poppins_bold"
                 android:gravity="center"
-                android:text="Profiili"
+                android:text="Tili"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
 
@@ -67,20 +67,27 @@
 
                 <ImageView
                     android:id="@+id/iv_profile"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginTop="16dp"
-                    android:src="@drawable/ic_account" />
+                    android:layout_width="128dp"
+                    android:layout_height="128dp"
+                    android:layout_marginTop="32dp"
+                    android:src="@drawable/ic_account"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:fontFamily="@font/poppins"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/poppins_bold"
                     android:text="Nimi"
                     android:textAlignment="center"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_profile" />
 
                 <TextView
                     android:id="@+id/tv_email"
@@ -91,43 +98,54 @@
                     android:text="Sähköposti"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_sign_out"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
                     android:backgroundTint="@color/white"
                     android:padding="12dp"
                     android:text="Kirjaudu ulos"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:cornerRadius="100dp"
                     app:icon="@drawable/ic_logout"
                     app:iconGravity="textStart"
                     app:iconTint="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_email"
                     app:rippleColor="@color/gray" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_login_link"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
                     android:layout_marginBottom="16dp"
                     android:padding="12dp"
                     android:text="Kirjaudu"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
+                    android:visibility="gone"
                     app:backgroundTint="@color/white"
                     app:cornerRadius="100dp"
                     app:icon="@drawable/ic_login"
                     app:iconGravity="textStart"
                     app:iconTint="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_email"
                     app:rippleColor="@color/gray" />
 
                 <com.google.android.material.button.MaterialButton
@@ -175,6 +193,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
                     android:padding="12dp"
                     android:text="Poista tili"
                     android:textAllCaps="false"

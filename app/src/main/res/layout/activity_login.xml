@@ -188,7 +188,7 @@
                 android:layout_marginEnd="16dp"
                 android:fontFamily="@font/poppins_medium"
                 android:gravity="center"
-                android:text="Fooderissa voit selata ravintoloiden ruokalistoja.\n\nFooderissa käytetään Jesun Maailma -tiliä."
+                android:text="Fooderissa voit selata ravintoloiden ruokalistoja ja kun kirjaudut sisään,\nvoit tallentaa ravintoloita suosikkeihin.\n\nFooderissa käytetään Jesun Maailma -tiliä."
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="14sp"

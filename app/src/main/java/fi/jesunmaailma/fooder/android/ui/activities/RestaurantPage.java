@@ -167,7 +167,7 @@ public class RestaurantPage extends AppCompatActivity {
             public void onError(String error) {
                 Snackbar snackbar = Snackbar.make(
                         snackBar,
-                        String.format("Hupsista!\nSisältöä ei ladattu. Tarkista Internet-yhteys."),
+                        "Hupsista!\nTarkista Internet-yhteys.",
                         Snackbar.LENGTH_INDEFINITE
                 );
                 snackbar.setAction("Päivitä", new View.OnClickListener() {

@@ -43,13 +43,17 @@ import fi.jesunmaailma.fooder.android.R;
 public class Profile extends AppCompatActivity {
     ImageView ivProfilePic;
     TextView tvUsername, tvEmail;
+    
     MaterialButton btnSignIn, btnSignOut, btnEditEmail, btnEditPassword, btnDeleteAccount;
+
     FirebaseAuth auth;
     FirebaseFirestore database;
     FirebaseUser user;
     FirebaseAnalytics analytics;
     DocumentReference documentReference;
+
     GoogleSignInClient client;
+
     ActionBar actionBar;
     Toolbar toolbar;
 
@@ -110,13 +114,13 @@ public class Profile extends AppCompatActivity {
             btnEditPassword.setVisibility(View.VISIBLE);
             btnDeleteAccount.setVisibility(View.VISIBLE);
 
-            documentReference = database.collection("Users").document(auth.getCurrentUser().getUid());
+            documentReference = database.collection("Users").document(user.getUid());
             documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     DocumentSnapshot snapshot = task.getResult();
                     if (snapshot.exists()) {
-                        ivProfilePic.setImageResource(R.drawable.ic_account_2);
+                        ivProfilePic.setImageResource(R.drawable.ic_account);
                         tvUsername.setText(String.format("%s %s", snapshot.getString("firstName"), snapshot.getString("lastName")));
                         tvEmail.setText(snapshot.getString("email"));
                     } else {
@@ -269,7 +273,7 @@ public class Profile extends AppCompatActivity {
                                                                 Toast.LENGTH_LONG
                                                         ).show();
                                                         startActivity(
-                                                                new Intent(getApplicationContext(), MainActivity.class)
+                                                                new Intent(getApplicationContext(), Profile.class)
                                                         .addFlags(
                                                                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
                                                         ));
@@ -320,7 +324,7 @@ public class Profile extends AppCompatActivity {
                                                     Toast.LENGTH_LONG
                                             ).show();
                                             startActivity(
-                                                    new Intent(getApplicationContext(), MainActivity.class)
+                                                    new Intent(getApplicationContext(), Profile.class)
                                             .addFlags(
                                                     Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
                                             ));
@@ -385,7 +389,7 @@ public class Profile extends AppCompatActivity {
                                         Toast.LENGTH_LONG
                                 ).show();
                                 startActivity(
-                                        new Intent(getApplicationContext(), MainActivity.class)
+                                        new Intent(getApplicationContext(), Profile.class)
                                                 .addFlags(
                                                         Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
                                                 ));
