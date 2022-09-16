@@ -37,6 +37,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import fi.jesunmaailma.fooder.android.R;
 
@@ -121,10 +122,25 @@ public class Profile extends AppCompatActivity {
                     DocumentSnapshot snapshot = task.getResult();
                     if (snapshot.exists()) {
                         ivProfilePic.setImageResource(R.drawable.ic_account);
-                        tvUsername.setText(String.format("%s %s", snapshot.getString("firstName"), snapshot.getString("lastName")));
+                        tvUsername.setText(
+                                String.format(
+                                        "%s %s",
+                                        snapshot.getString("firstName"),
+                                        snapshot.getString("lastName")
+                                )
+                        );
                         tvEmail.setText(snapshot.getString("email"));
                     } else {
-                        tvUsername.setText(user.getDisplayName());
+                        tvUsername.setText(
+                                String.format(
+                                        "Moikka, %s",
+                                        getFirstName(
+                                                Objects.requireNonNull(
+                                                        user.getDisplayName()
+                                                )
+                                        )
+                                )
+                        );
                         tvEmail.setText(user.getEmail());
                     }
                 }
@@ -168,6 +184,14 @@ public class Profile extends AppCompatActivity {
                 DeleteAccountDialog(Profile.this);
             }
         });
+    }
+
+    public String getFirstName(String fullName) {
+        int index = fullName.lastIndexOf(" ");
+        if (index > -1) {
+            return fullName.substring(0, index);
+        }
+        return fullName;
     }
 
     private void SignOutDialog(final Activity activity) {

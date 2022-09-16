@@ -40,7 +40,7 @@ public class FoodDetails extends AppCompatActivity {
 
         tvFoodDetails.setText(
                 String.format(
-                        "%s · %s0€",
+                        "%s · %s0 €",
                         food.getName(),
                         food.getPrice()
                 )
