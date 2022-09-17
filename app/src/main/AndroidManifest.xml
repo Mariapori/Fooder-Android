@@ -14,6 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Fooder.Android.NoActionBar">
         <activity
+            android:name=".ui.activities.FavouritesActivity"
+            android:configChanges="orientation|screenSize|layoutDirection"
+            android:exported="true"
+            android:theme="@style/Theme.Fooder.Android.NoActionBar"/>
+        <activity
             android:name=".ui.activities.OnboardingActivity"
             android:configChanges="orientation|screenSize|layoutDirection"
             android:exported="true"

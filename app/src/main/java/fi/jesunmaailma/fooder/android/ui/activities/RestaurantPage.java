@@ -10,12 +10,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +35,9 @@ import fi.jesunmaailma.fooder.android.models.Restaurant;
 import fi.jesunmaailma.fooder.android.services.FooderDataService;
 
 public class RestaurantPage extends AppCompatActivity {
+    // VAIN virheenjäljitystä varten.
+    public static final String RESTAURANT_DATA_TAG = "TAG";
+
     ActionBar actionBar;
     Toolbar toolbar;
 
@@ -38,7 +45,13 @@ public class RestaurantPage extends AppCompatActivity {
     TextView tvRestaurantName, tvRestaurantAddress;
     RecyclerView recyclerView;
 
+    // Firebase Auth
+    FirebaseAuth auth;
+    FirebaseUser user;
+
     ProgressBar progressBar;
+
+    MaterialButton mbAddToFavourites, mbRemoveFromFavourites;
 
     CoordinatorLayout snackBar;
 
@@ -73,6 +86,10 @@ public class RestaurantPage extends AppCompatActivity {
 
         progressBar = findViewById(R.id.progressBar);
 
+        mbAddToFavourites = findViewById(R.id.mb_add_to_favourites);
+        // TODO: Digiruokalista.com:n ylläpitäjälle tiedoksi: Lisää suosikin poistamisendpoint, jolloin käyttäjä pystyy poistamaan ravintolan suosikeista omalla napilla.
+        mbRemoveFromFavourites = findViewById(R.id.mb_remove_from_favourites);
+
         snackBar = findViewById(R.id.snackbar);
 
         foodList = new ArrayList<>();
@@ -93,15 +110,51 @@ public class RestaurantPage extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(false);
-                progressBar.setVisibility(View.VISIBLE);
                 swipeRefreshLayout.setVisibility(View.GONE);
+                progressBar.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
 
                 getRestaurantById(getResources().getString(R.string.digiruokalista_api_base_url) + "HaeYritys?id=" + restaurant.getId());
             }
         });
 
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+
         getRestaurantById(getResources().getString(R.string.digiruokalista_api_base_url) + "HaeYritys?id=" + restaurant.getId());
+
+        if (user != null) {
+            mbAddToFavourites.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String addRestaurantURL = String.format(
+                            "%sLisaaSuosikki?Kayttaja=%s&YritysID=%s&secret=AccessToken",
+                            getResources().getString(R.string.digiruokalista_api_base_url),
+                            user.getEmail(),
+                            restaurant.getId()
+                            );
+
+                    addToFavourites(addRestaurantURL);
+                }
+            });
+        }
+    }
+
+    private void addToFavourites(String addRestaurantURL) {
+        service.addRestaurantToFavourites(addRestaurantURL, new FooderDataService.OnFavouriteAddedRestaurantDataResponse() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d(RESTAURANT_DATA_TAG,"onResponse: " + response.toString());
+
+                mbAddToFavourites.setVisibility(View.GONE);
+                mbRemoveFromFavourites.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.e(RESTAURANT_DATA_TAG, "onError: " + error);
+            }
+        });
     }
 
     public void getRestaurantById(String url) {
@@ -165,6 +218,8 @@ public class RestaurantPage extends AppCompatActivity {
 
             @Override
             public void onError(String error) {
+                progressBar.setVisibility(View.GONE);
+
                 Snackbar snackbar = Snackbar.make(
                         snackBar,
                         "Hupsista!\nTarkista Internet-yhteys.",

@@ -122,25 +122,10 @@ public class Profile extends AppCompatActivity {
                     DocumentSnapshot snapshot = task.getResult();
                     if (snapshot.exists()) {
                         ivProfilePic.setImageResource(R.drawable.ic_account);
-                        tvUsername.setText(
-                                String.format(
-                                        "%s %s",
-                                        snapshot.getString("firstName"),
-                                        snapshot.getString("lastName")
-                                )
-                        );
+                        tvUsername.setText(snapshot.getString("firstName"));
                         tvEmail.setText(snapshot.getString("email"));
                     } else {
-                        tvUsername.setText(
-                                String.format(
-                                        "Moikka, %s",
-                                        getFirstName(
-                                                Objects.requireNonNull(
-                                                        user.getDisplayName()
-                                                )
-                                        )
-                                )
-                        );
+                        tvUsername.setText(getFirstName(Objects.requireNonNull(user.getDisplayName())));
                         tvEmail.setText(user.getEmail());
                     }
                 }
@@ -201,7 +186,7 @@ public class Profile extends AppCompatActivity {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                    builder.setTitle(String.format("%s %s", document.getString("firstName"), document.getString("lastName")));
+                    builder.setTitle(document.getString("firstName"));
                     builder.setMessage("Haluatko varmasti kirjautua ulos Fooder-palvelusta?");
                     builder.setPositiveButton("Kirjaudu ulos", new DialogInterface.OnClickListener() {
                         @Override
@@ -210,10 +195,9 @@ public class Profile extends AppCompatActivity {
                             client.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    startActivity(new Intent(getApplicationContext(), MainActivity.class)
+                                    startActivity(new Intent(getApplicationContext(), OnboardingActivity.class)
                                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
                                     finish();
-                                    overridePendingTransition(0, 0);
                                 }
                             });
                         }
@@ -237,7 +221,7 @@ public class Profile extends AppCompatActivity {
                             client.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    startActivity(new Intent(getApplicationContext(), MainActivity.class)
+                                    startActivity(new Intent(getApplicationContext(), OnboardingActivity.class)
                                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
                                     finish();
                                     overridePendingTransition(0, 0);
@@ -449,9 +433,7 @@ public class Profile extends AppCompatActivity {
                     builder.setTitle(
                             String.format(
                                     "%s\n(%s)",
-                                    document.getString("firstName") +
-                                    " " +
-                                    document.getString("lastName"),
+                                    document.getString("firstName"),
                                     document.getString("email")
                             )
                     )
@@ -499,7 +481,7 @@ public class Profile extends AppCompatActivity {
                     builder.setTitle(
                             String.format(
                                     "%s\n(%s)",
-                                    user.getDisplayName(),
+                                    getFirstName(Objects.requireNonNull(user.getDisplayName())),
                                     user.getEmail()
                             )
                     )
@@ -544,7 +526,7 @@ public class Profile extends AppCompatActivity {
     private void updateUI() {
         startActivity(
                 new Intent(
-                        getApplicationContext(), MainActivity.class
+                        getApplicationContext(), OnboardingActivity.class
                 ).addFlags(
                         Intent.FLAG_ACTIVITY_NEW_TASK
                                 |

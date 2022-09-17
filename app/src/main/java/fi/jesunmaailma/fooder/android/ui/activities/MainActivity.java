@@ -212,16 +212,17 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onError(String error) {
+                progressBar.setVisibility(View.GONE);
+
                 Snackbar snackbar = Snackbar.make(
                         snackBar,
-                        String.format("Virhe:\n%s", error),
+                        "Tapahtui virhe.",
                         Snackbar.LENGTH_INDEFINITE
                 );
                 snackbar.setAction("Päivitä", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         progressBar.setVisibility(View.VISIBLE);
-                        swipeRefreshLayout.setVisibility(View.GONE);
                         rvRestaurantList.setVisibility(View.GONE);
                         getRestaurants(
                                 getResources().getString(R.string.digiruokalista_api_base_url) + "HaeYritykset"
@@ -245,6 +246,10 @@ public class MainActivity extends AppCompatActivity
             case R.id.mi_profile:
                 closeDrawer(drawer);
                 startActivity(new Intent(getApplicationContext(), Profile.class));
+                break;
+            case R.id.mi_favourites:
+                closeDrawer(drawer);
+                startActivity(new Intent(getApplicationContext(), FavouritesActivity.class));
                 break;
             case R.id.mi_info:
                 closeDrawer(drawer);

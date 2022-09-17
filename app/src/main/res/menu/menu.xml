@@ -9,6 +9,11 @@
                 android:title="Tili"
                 app:showAsAction="always" />
             <item
+                android:id="@+id/mi_favourites"
+                android:icon="@drawable/ic_favorite_border"
+                android:title="Suosikit"
+                app:showAsAction="always" />
+            <item
                 android:id="@+id/mi_info"
                 android:icon="@drawable/ic_info"
                 android:title="Tietoja"
