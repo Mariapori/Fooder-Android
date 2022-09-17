@@ -144,10 +144,38 @@ public class RestaurantPage extends AppCompatActivity {
         service.addRestaurantToFavourites(addRestaurantURL, new FooderDataService.OnFavouriteAddedRestaurantDataResponse() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.d(RESTAURANT_DATA_TAG,"onResponse: " + response.toString());
+                Snackbar snackbar = Snackbar.make(
+                        snackBar,
+                        "Ravintola lisätty suosikkeihin.",
+                        Snackbar.LENGTH_LONG
+                );
+                snackbar.setDuration(5000);
+                snackbar.show();
 
+                getFavourites(
+                        String.format(
+                                "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
+                                getResources().getString(R.string.digiruokalista_api_base_url),
+                                user.getEmail()
+                        )
+                );
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.e(RESTAURANT_DATA_TAG, "onError: " + error);
+            }
+        });
+    }
+
+    public void getFavourites(String url) {
+        service.getUserFavourites(url, new FooderDataService.OnFavouriteDataResponse() {
+            @Override
+            public void onResponse(JSONArray response) {
                 mbAddToFavourites.setVisibility(View.GONE);
                 mbRemoveFromFavourites.setVisibility(View.VISIBLE);
+
+                Log.d(RESTAURANT_DATA_TAG, "onResponse: " + response.toString());
             }
 
             @Override
