@@ -62,7 +62,12 @@ public class FavouritesActivity extends AppCompatActivity {
     List<Favourite> favouriteList;
     List<Restaurant> restaurantList;
 
+    Favourite favourite;
+    Restaurant restaurant;
+
     FooderDataService service;
+
+    JSONObject restaurantData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,12 +176,66 @@ public class FavouritesActivity extends AppCompatActivity {
         service.getRestaurants(url, new FooderDataService.OnRestaurantDataResponse() {
             @Override
             public void onResponse(JSONArray response) {
+                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+                rvFavouritesList.setVisibility(View.VISIBLE);
+
                 Log.d(RESTAURANT_DATA_TAG, "onResponse: " + response);
+
+                favouriteList.clear();
+                restaurantList.clear();
+
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        restaurantData = response.getJSONObject(i);
+
+                        restaurant = new Restaurant();
+
+                        restaurant.setId(restaurantData.getInt("id"));
+                        restaurant.setCity(restaurantData.getString("kaupunki"));
+
+                        restaurantList.add(restaurant);
+                        adapter.notifyDataSetChanged();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
 
             @Override
             public void onError(String error) {
                 Log.e(RESTAURANT_DATA_TAG, "onError: " + error);
+
+                progressBar.setVisibility(View.GONE);
+
+                Snackbar snackbar = Snackbar.make(
+                        snackBar,
+                        "Hupsista!\nTarkista Internet-yhteys.",
+                        Snackbar.LENGTH_INDEFINITE
+                );
+                snackbar.setAction("Päivitä", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        progressBar.setVisibility(View.VISIBLE);
+                        swipeRefreshLayout.setVisibility(View.GONE);
+                        rvFavouritesList.setVisibility(View.GONE);
+                        getRestaurants(
+                                String.format(
+                                        "%sHaeYritykset",
+                                        getResources().getString(R.string.digiruokalista_api_base_url)
+                                )
+                        );
+                        getFavourites(
+                                String.format(
+                                        "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
+                                        getResources().getString(R.string.digiruokalista_api_base_url),
+                                        user.getEmail()
+                                )
+                        );
+                    }
+                });
+                snackbar.show();
             }
         });
     }
@@ -186,11 +245,63 @@ public class FavouritesActivity extends AppCompatActivity {
             @Override
             public void onResponse(JSONArray response) {
                 Log.d(RESTAURANT_DATA_TAG, "onResponse: " + response);
+
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONObject favouriteData = response.getJSONObject(i);
+
+                        favourite = new Favourite();
+
+                        favourite.setRestaurantId(favouriteData.getInt("yritysID"));
+                        favourite.setUserEmail(favouriteData.getString("kayttaja"));
+                        favourite.setName(restaurantData.getString("nimi"));
+                        favourite.setCity(restaurantData.getString("kaupunki"));
+
+                        if (favourite.getRestaurantId() == restaurant.getId()) {
+                            restaurantList.add(restaurant);
+                            favouriteList.add(favourite);
+                        }
+
+                        adapter.notifyDataSetChanged();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
 
             @Override
             public void onError(String error) {
                 Log.e(RESTAURANT_DATA_TAG, "onError: " + error);
+
+                progressBar.setVisibility(View.GONE);
+
+                Snackbar snackbar = Snackbar.make(
+                        snackBar,
+                        "Hupsista!\nTarkista Internet-yhteys.",
+                        Snackbar.LENGTH_INDEFINITE
+                );
+                snackbar.setAction("Päivitä", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        progressBar.setVisibility(View.VISIBLE);
+                        swipeRefreshLayout.setVisibility(View.GONE);
+                        rvFavouritesList.setVisibility(View.GONE);
+                        getRestaurants(
+                                String.format(
+                                        "%sHaeYritykset",
+                                        getResources().getString(R.string.digiruokalista_api_base_url)
+                                )
+                        );
+                        getFavourites(
+                                String.format(
+                                        "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
+                                        getResources().getString(R.string.digiruokalista_api_base_url),
+                                        user.getEmail()
+                                )
+                        );
+                    }
+                });
+                snackbar.show();
             }
         });
     }
