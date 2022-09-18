@@ -87,12 +87,14 @@ public class RestaurantPage extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
 
         mbAddToFavourites = findViewById(R.id.mb_add_to_favourites);
-        // TODO: Digiruokalista.com:n ylläpitäjälle tiedoksi: Lisää suosikin poistamisendpoint, jolloin käyttäjä pystyy poistamaan ravintolan suosikeista omalla napilla.
         mbRemoveFromFavourites = findViewById(R.id.mb_remove_from_favourites);
 
         snackBar = findViewById(R.id.snackbar);
 
         foodList = new ArrayList<>();
+
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
 
         service = new FooderDataService(this);
 
@@ -114,27 +116,51 @@ public class RestaurantPage extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
 
-                getRestaurantById(getResources().getString(R.string.digiruokalista_api_base_url) + "HaeYritys?id=" + restaurant.getId());
+                getRestaurantById(
+                        String.format(
+                                "%sHaeYritys?id=%s",
+                                getResources().getString(R.string.digiruokalista_api_base_url),
+                                restaurant.getId()
+                        )
+                );
+                getFavourites(String.format(
+                        "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
+                        getResources().getString(R.string.digiruokalista_api_base_url),
+                        user.getEmail()
+                ));
             }
         });
 
-        auth = FirebaseAuth.getInstance();
-        user = auth.getCurrentUser();
-
-        getRestaurantById(getResources().getString(R.string.digiruokalista_api_base_url) + "HaeYritys?id=" + restaurant.getId());
+        getRestaurantById(
+                String.format(
+                        "%sHaeYritys?id=%s",
+                        getResources().getString(R.string.digiruokalista_api_base_url),
+                        restaurant.getId()
+                )
+        );
+        getFavourites(String.format(
+                "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
+                getResources().getString(R.string.digiruokalista_api_base_url),
+                user.getEmail()
+        ));
 
         if (user != null) {
             mbAddToFavourites.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String addRestaurantURL = String.format(
+                    addToFavourites(String.format(
                             "%sLisaaSuosikki?Kayttaja=%s&YritysID=%s&secret=AccessToken",
                             getResources().getString(R.string.digiruokalista_api_base_url),
                             user.getEmail(),
                             restaurant.getId()
-                            );
+                    ));
+                }
+            });
 
-                    addToFavourites(addRestaurantURL);
+            mbRemoveFromFavourites.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
                 }
             });
         }
@@ -151,6 +177,9 @@ public class RestaurantPage extends AppCompatActivity {
                 );
                 snackbar.setDuration(5000);
                 snackbar.show();
+
+                mbAddToFavourites.setVisibility(View.GONE);
+                mbRemoveFromFavourites.setVisibility(View.VISIBLE);
 
                 getFavourites(
                         String.format(
@@ -172,9 +201,6 @@ public class RestaurantPage extends AppCompatActivity {
         service.getUserFavourites(url, new FooderDataService.OnFavouriteDataResponse() {
             @Override
             public void onResponse(JSONArray response) {
-                mbAddToFavourites.setVisibility(View.GONE);
-                mbRemoveFromFavourites.setVisibility(View.VISIBLE);
-
                 Log.d(RESTAURANT_DATA_TAG, "onResponse: " + response.toString());
             }
 

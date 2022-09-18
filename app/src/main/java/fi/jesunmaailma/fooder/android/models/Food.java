@@ -8,6 +8,7 @@ public class Food implements Serializable {
     public String category;
     public double price;
     public boolean isFood;
+    public boolean isVegan;
     public int listPos;
 
     public String getName() {
@@ -20,6 +21,14 @@ public class Food implements Serializable {
 
     public void setIsFood(boolean isFood) {
         this.isFood = isFood;
+    }
+
+    public boolean getIsVegan() {
+        return isVegan;
+    }
+
+    public void setIsVegan(boolean isVegan) {
+        this.isVegan = isVegan;
     }
 
     public void setCategory(String category){
