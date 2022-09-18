@@ -33,6 +33,7 @@ import java.util.List;
 import fi.jesunmaailma.fooder.android.R;
 import fi.jesunmaailma.fooder.android.adapters.FavouriteAdapter;
 import fi.jesunmaailma.fooder.android.models.Favourite;
+import fi.jesunmaailma.fooder.android.models.Restaurant;
 import fi.jesunmaailma.fooder.android.services.FooderDataService;
 
 public class FavouritesActivity extends AppCompatActivity {
@@ -59,6 +60,7 @@ public class FavouritesActivity extends AppCompatActivity {
 
     FavouriteAdapter adapter;
     List<Favourite> favouriteList;
+    List<Restaurant> restaurantList;
 
     FooderDataService service;
 
@@ -99,6 +101,7 @@ public class FavouritesActivity extends AppCompatActivity {
         snackBar = findViewById(R.id.snackbar);
 
         favouriteList = new ArrayList<>();
+        restaurantList = new ArrayList<>();
 
         adapter = new FavouriteAdapter(favouriteList);
         rvFavouritesList.setAdapter(adapter);
@@ -108,13 +111,19 @@ public class FavouritesActivity extends AppCompatActivity {
 
         service = new FooderDataService(this);
 
-        /* swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(false);
                 progressBar.setVisibility(View.VISIBLE);
                 rvFavouritesList.setVisibility(View.GONE);
 
+                getRestaurants(
+                        String.format(
+                                "%sHaeYritykset",
+                                getResources().getString(R.string.digiruokalista_api_base_url)
+                        )
+                );
                 getFavourites(
                         String.format(
                                 "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
@@ -123,7 +132,7 @@ public class FavouritesActivity extends AppCompatActivity {
                         )
                 );
             }
-        }); */
+        });
 
         if (user == null) {
             swipeRefreshLayout.setVisibility(View.GONE);
@@ -142,21 +151,41 @@ public class FavouritesActivity extends AppCompatActivity {
             authRequiredContainer.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
 
-            /* getFavourites(
+            getRestaurants(
+                    String.format(
+                            "%sHaeYritykset",
+                            getResources().getString(R.string.digiruokalista_api_base_url)
+                    )
+            );
+            getFavourites(
                     String.format(
                             "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
                             getResources().getString(R.string.digiruokalista_api_base_url),
                             user.getEmail()
                     )
-            ); */
+            );
         }
+    }
+
+    public void getRestaurants(String url) {
+        service.getRestaurants(url, new FooderDataService.OnRestaurantDataResponse() {
+            @Override
+            public void onResponse(JSONArray response) {
+                Log.d(RESTAURANT_DATA_TAG, "onResponse: " + response);
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.e(RESTAURANT_DATA_TAG, "onError: " + error);
+            }
+        });
     }
 
     public void getFavourites(String url) {
         service.getUserFavourites(url, new FooderDataService.OnFavouriteDataResponse() {
             @Override
             public void onResponse(JSONArray response) {
-                // TODO: Hae data (ehkä kaksi kertaa), ensin suosikit, sitten heti perään ravintola id:n perusteella.
+                Log.d(RESTAURANT_DATA_TAG, "onResponse: " + response);
             }
 
             @Override

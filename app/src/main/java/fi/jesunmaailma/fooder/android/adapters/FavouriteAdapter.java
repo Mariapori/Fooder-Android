@@ -30,7 +30,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         view = LayoutInflater
                 .from(parent.getContext())
-                .inflate(R.layout.restaurant_view, parent, false);
+                .inflate(R.layout.favourite_view, parent, false);
         return new ViewHolder(view);
     }
 

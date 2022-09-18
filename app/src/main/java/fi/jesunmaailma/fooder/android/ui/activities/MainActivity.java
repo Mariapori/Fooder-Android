@@ -133,7 +133,13 @@ public class MainActivity extends AppCompatActivity
                 progressBar.setVisibility(View.VISIBLE);
                 rvRestaurantList.setVisibility(View.GONE);
 
-                getRestaurants(getResources().getString(R.string.digiruokalista_api_base_url) + "HaeYritykset");
+                getRestaurants(
+                        String.format(
+                                "%sHaeYritykset",
+                                getResources().getString(R.string.digiruokalista_api_base_url)
+                        )
+                );
+
             }
         });
 
