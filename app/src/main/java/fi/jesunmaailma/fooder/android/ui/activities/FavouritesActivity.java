@@ -157,7 +157,24 @@ public class FavouritesActivity extends AppCompatActivity {
             );
         }
     }
+public void getRestaurantDetails(String url, Favourite fav){
+    service.getRestaurantById(url, new FooderDataService.OnRestaurantByIdDataResponse() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try{
+                    fav.setRestaurantName(response.getString("nimi"));
+                    fav.setRestaurantCity(response.getString("kaupunki"));
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
 
+            @Override
+            public void onError(String error) {
+                //TODO: Tee jotain
+            }
+        });
+}
     public void getFavourites(String url) {
         service.getUserFavourites(url, new FooderDataService.OnFavouriteDataResponse() {
             @Override
@@ -177,10 +194,12 @@ public class FavouritesActivity extends AppCompatActivity {
 
                         favourite = new Favourite();
 
+                        favourite.setFavoriteId(favouriteData.getInt("id"));
                         favourite.setRestaurantId(favouriteData.getInt("yritysID"));
-
+                        getRestaurantDetails(String.format("https://digiruokalista.com/api/v1/HaeYritys?id=%s",favourite.getRestaurantId()),favourite);
                         // TODO: Lisäystä vailla.
-
+                        favouriteList.add(favourite);
+                        adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

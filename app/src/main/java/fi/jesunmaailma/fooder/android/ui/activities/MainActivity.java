@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity
     CoordinatorLayout snackBar;
 
     RestaurantAdapter restaurantAdapter;
-    List<Restaurant> restaurantList;
+    public static List<Restaurant> restaurantList;
 
     FooderDataService service;
 
