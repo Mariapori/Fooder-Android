@@ -193,7 +193,10 @@ public class FavouritesActivity extends AppCompatActivity {
                         restaurant = new Restaurant();
 
                         restaurant.setId(restaurantData.getInt("id"));
+                        restaurant.setName(restaurantData.getString("nimi"));
+                        restaurant.setAddress(restaurantData.getString("osoite"));
                         restaurant.setCity(restaurantData.getString("kaupunki"));
+                        restaurant.setPostalCode(restaurantData.getString("postinumero"));
 
                         restaurantList.add(restaurant);
                         adapter.notifyDataSetChanged();

@@ -224,7 +224,6 @@ public class Profile extends AppCompatActivity {
                                     startActivity(new Intent(getApplicationContext(), OnboardingActivity.class)
                                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
                                     finish();
-                                    overridePendingTransition(0, 0);
                                 }
                             });
                         }
@@ -534,7 +533,6 @@ public class Profile extends AppCompatActivity {
                 )
         );
         finish();
-        overridePendingTransition(0, 0);
     }
 
     @Override

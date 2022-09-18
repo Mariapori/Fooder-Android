@@ -13,11 +13,11 @@ import java.util.List;
 
 import fi.jesunmaailma.fooder.android.R;
 import fi.jesunmaailma.fooder.android.models.Favourite;
-import fi.jesunmaailma.fooder.android.models.Restaurant;
 import fi.jesunmaailma.fooder.android.ui.activities.RestaurantPage;
 
 public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.ViewHolder> {
-    public static final String RESTAURANT_DATA_TAG = "TAG";
+    // VAIN virheenjäljitystä varten.
+    //public static final String RESTAURANT_DATA_TAG = "TAG";
     List<Favourite> favouriteList;
     View view;
 

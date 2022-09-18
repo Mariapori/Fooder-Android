@@ -313,7 +313,6 @@ public class RegisterActivity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), MainActivity.class)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
         finish();
-        overridePendingTransition(0, 0);
     }
 
     @Override
