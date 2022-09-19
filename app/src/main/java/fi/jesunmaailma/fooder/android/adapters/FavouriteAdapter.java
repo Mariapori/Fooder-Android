@@ -41,12 +41,8 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Favourite favourite = favouriteList.get(position);
-        if(favourite.getRestaurantCity() != null && favourite.getRestaurantName() != null){
-            holder.restaurantName.setText(favourite.getRestaurantName());
-            holder.restaurantCity.setText(favourite.getRestaurantCity());
-        }
-
-
+        holder.restaurantName.setText(favourite.getRestaurantName());
+        holder.restaurantCity.setText(favourite.getRestaurantCity());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +54,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
                     if(res.getId() == fav.getRestaurantId()){
                         restaurant = MainActivity.restaurantList.get(j);
                         i.putExtra("isFavorite",true);
+                        break;
                     }
                 }
                 i.putExtra("restaurant", restaurant);
@@ -77,8 +74,8 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            restaurantName = itemView.findViewById(R.id.restaurant_name);
-            restaurantCity = itemView.findViewById(R.id.restaurant_city);
+            restaurantName = itemView.findViewById(R.id.txtRavintolanimi);
+            restaurantCity = itemView.findViewById(R.id.txtKaupunki);
         }
     }
 }
