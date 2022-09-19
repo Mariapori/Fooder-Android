@@ -62,6 +62,8 @@ public class RestaurantPage extends AppCompatActivity {
 
     FooderDataService service;
 
+    boolean AlreadyFavorite;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +78,7 @@ public class RestaurantPage extends AppCompatActivity {
         }
 
         restaurant = (Restaurant) getIntent().getSerializableExtra("restaurant");
-
+        AlreadyFavorite = (boolean) getIntent().getBooleanExtra("isFavorite",false);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
 
         tvRestaurantName = findViewById(R.id.tv_restaurant_name);
@@ -88,6 +90,14 @@ public class RestaurantPage extends AppCompatActivity {
 
         mbAddToFavourites = findViewById(R.id.mb_add_to_favourites);
         mbRemoveFromFavourites = findViewById(R.id.mb_remove_from_favourites);
+
+        if(AlreadyFavorite){
+            mbAddToFavourites.setVisibility(View.GONE);
+            mbRemoveFromFavourites.setVisibility(View.VISIBLE);
+        }else{
+            mbAddToFavourites.setVisibility(View.VISIBLE);
+            mbRemoveFromFavourites.setVisibility(View.GONE);
+        }
 
         snackBar = findViewById(R.id.snackbar);
 

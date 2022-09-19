@@ -44,6 +44,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(), RestaurantPage.class);
                 i.putExtra("restaurant", restaurantList.get(position));
+                //TODO: Tänne pitää hakea tieto onko ravintola jo suosikeissa.
+                //i.putExtra("isFavorite",totuusarvo);
                 v.getContext().startActivity(i);
             }
         });

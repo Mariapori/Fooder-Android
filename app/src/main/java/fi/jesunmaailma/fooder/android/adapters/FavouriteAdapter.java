@@ -13,12 +13,16 @@ import java.util.List;
 
 import fi.jesunmaailma.fooder.android.R;
 import fi.jesunmaailma.fooder.android.models.Favourite;
+import fi.jesunmaailma.fooder.android.models.Restaurant;
+import fi.jesunmaailma.fooder.android.services.FooderDataService;
+import fi.jesunmaailma.fooder.android.ui.activities.MainActivity;
 import fi.jesunmaailma.fooder.android.ui.activities.RestaurantPage;
 
 public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.ViewHolder> {
     // VAIN virheenjäljitystä varten.
     //public static final String RESTAURANT_DATA_TAG = "TAG";
     List<Favourite> favouriteList;
+    Restaurant restaurant;
     View view;
 
     public FavouriteAdapter(List<Favourite> favouriteList) {
@@ -37,14 +41,26 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Favourite favourite = favouriteList.get(position);
+        if(favourite.getRestaurantCity() != null && favourite.getRestaurantName() != null){
+            holder.restaurantName.setText(favourite.getRestaurantName());
+            holder.restaurantCity.setText(favourite.getRestaurantCity());
+        }
 
-        holder.restaurantName.setText(favourite.getName());
-        holder.restaurantCity.setText(favourite.getCity());
+
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(), RestaurantPage.class);
-                i.putExtra("restaurant", favouriteList.get(position));
+                Favourite fav = favouriteList.get(position);
+                for (int j = 0; j < MainActivity.restaurantList.size(); j++) {
+                    Restaurant res = MainActivity.restaurantList.get(j);
+                    if(res.getId() == fav.getRestaurantId()){
+                        restaurant = MainActivity.restaurantList.get(j);
+                        i.putExtra("isFavorite",true);
+                    }
+                }
+                i.putExtra("restaurant", restaurant);
                 v.getContext().startActivity(i);
             }
         });

@@ -62,4 +62,5 @@ public class Restaurant implements Serializable {
                 ", city='" + city + '\'' +
                 '}';
     }
+
 }
