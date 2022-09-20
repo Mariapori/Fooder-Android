@@ -29,6 +29,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -45,7 +46,7 @@ public class Profile extends AppCompatActivity {
     ImageView ivProfilePic;
     TextView tvUsername, tvEmail;
     
-    MaterialButton btnSignIn, btnSignOut, btnEditEmail, btnEditPassword, btnDeleteAccount;
+    MaterialButton btnSignIn, btnSignOut, btnEditEmail, btnEditName, btnEditPassword, btnDeleteAccount;
 
     FirebaseAuth auth;
     FirebaseFirestore database;
@@ -79,6 +80,7 @@ public class Profile extends AppCompatActivity {
         btnSignIn = findViewById(R.id.btn_login_link);
         btnSignOut = findViewById(R.id.btn_sign_out);
         btnEditEmail = findViewById(R.id.btn_edit_email);
+        btnEditName = findViewById(R.id.btn_edit_name);
         btnEditPassword = findViewById(R.id.btn_edit_password);
         btnDeleteAccount = findViewById(R.id.btn_delete_account);
 
@@ -105,6 +107,7 @@ public class Profile extends AppCompatActivity {
             btnSignOut.setVisibility(View.GONE);
             btnSignIn.setVisibility(View.VISIBLE);
             btnEditEmail.setVisibility(View.GONE);
+            btnEditName.setVisibility(View.GONE);
             btnEditPassword.setVisibility(View.GONE);
             btnDeleteAccount.setVisibility(View.GONE);
         } else {
@@ -112,6 +115,7 @@ public class Profile extends AppCompatActivity {
             btnSignOut.setVisibility(View.VISIBLE);
             btnSignIn.setVisibility(View.GONE);
             btnEditEmail.setVisibility(View.VISIBLE);
+            btnEditName.setVisibility(View.VISIBLE);
             btnEditPassword.setVisibility(View.VISIBLE);
             btnDeleteAccount.setVisibility(View.VISIBLE);
 
@@ -156,6 +160,13 @@ public class Profile extends AppCompatActivity {
             }
         });
 
+        btnEditName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditNameDialog(Profile.this);
+            }
+        });
+
         btnEditPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -177,6 +188,14 @@ public class Profile extends AppCompatActivity {
             return fullName.substring(0, index);
         }
         return fullName;
+    }
+
+    public String getLastName(String fullName) {
+        int index = fullName.lastIndexOf(" ");
+        if (index > -1) {
+            return fullName.substring(index + 1 , fullName.length());
+        }
+        return "";
     }
 
     private void SignOutDialog(final Activity activity) {
@@ -350,6 +369,160 @@ public class Profile extends AppCompatActivity {
                                         }
                                     });
 
+                                }
+                            }).setNegativeButton("Peruuta", null)
+                            .setView(view)
+                            .create().show();
+                }
+            }
+        });
+    }
+
+    private void EditNameDialog(Activity activity) {
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot document = task.getResult();
+
+                if (document.exists()) {
+                    View view = inflater.inflate(R.layout.update_name_dialog, null);
+
+                    EditText firstName = view.findViewById(R.id.firstNameEdit);
+                    EditText lastName = view.findViewById(R.id.lastNameEdit);
+
+                    firstName.setText(document.getString("firstName"));
+                    lastName.setText(document.getString("lastName"));
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                    builder.setTitle("Päivitä nimi")
+                            .setMessage("Päivitä nimesi täyttämällä alla olevat kentät.")
+                            .setPositiveButton("Päivitä", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (firstName.getText().toString().isEmpty()) {
+                                        firstName.setError("Etunimi vaaditaan.");
+                                        return;
+                                    }
+
+                                    if (lastNameEdit.getText().toString().isEmpty()) {
+                                        lastName.setError("Sukunimi vaaditaan.");
+                                        return;
+                                    }
+
+                                    UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(
+                                            String.format(
+                                                "%s %s",
+                                                firstName.getText().toString(),
+                                                lastName.getText().toString()
+                                            )
+                                        )
+                                        .build();
+
+                                    user.updateProfile(userProfileChangeRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                            Map<String, Object> userData = new HashMap<>();
+
+                                            userData.put("firstName", firstName.getText().toString());
+                                            userData.put("lastName", lastName.getText().toString());
+
+                                            documentReference.update(userData).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        Toast.makeText(
+                                                                getApplicationContext(),
+                                                                "Nimi päivitetty.",
+                                                                Toast.LENGTH_LONG
+                                                        ).show();
+                                                        startActivity(
+                                                                new Intent(getApplicationContext(), Profile.class)
+                                                        .addFlags(
+                                                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                                        ));
+                                                        finish();
+                                                        overridePendingTransition(0, 0);
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull @NotNull Exception e) {
+                                            Toast.makeText(
+                                                    getApplicationContext(),
+                                                    "Virhe tapahtui jostain randomista syystä: " +
+                                                    e.getMessage(),
+                                                    Toast.LENGTH_LONG
+                                            ).show();
+                                        }
+                                    });
+                                }
+                            }).setNegativeButton("Peruuta", null)
+                            .setView(view)
+                            .create().show();
+                } else {
+                    View view = inflater.inflate(R.layout.update_name_dialog, null);
+
+                    EditText firstName = view.findViewById(R.id.firstNameEdit);
+                    EditText lastName = view.findViewById(R.id.lastNameEdit);
+
+                    firstName.setText(getFirstName(Objects.requireNonNull(user.getDisplayName())));
+                    lastName.setText(getLastName(Objects.requireNonNull(user.getDisplayName())));
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                    builder.setTitle("Päivitä nimi")
+                            .setMessage("Päivitä nimesi täyttämällä alla olevat kentät.")
+                            .setPositiveButton("Päivitä", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (firstName.getText().toString().isEmpty()) {
+                                        firstName.setError("Etunimi vaaditaan.");
+                                        return;
+                                    }
+
+                                    if (lastNameEdit.getText().toString().isEmpty()) {
+                                        lastName.setError("Sukunimi vaaditaan.");
+                                        return;
+                                    }
+
+                                    UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(
+                                            String.format(
+                                                "%s %s",
+                                                firstName.getText().toString(),
+                                                lastName.getText().toString()
+                                            )
+                                        ).build();
+
+                                    user.updateProfile(userProfileChangeRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull @NotNull Task<Void> task) {
+                                            Toast.makeText(
+                                                getApplicationContext(),
+                                                "Nimi päivitetty.",
+                                                Toast.LENGTH_LONG
+                                            ).show();
+                                            startActivity(
+                                                new Intent(getApplicationContext(), Profile.class)
+                                            .addFlags(
+                                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                            ));
+                                            finish();
+                                            overridePendingTransition(0, 0);
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull @NotNull Exception e) {
+                                            Toast.makeText(
+                                                    getApplicationContext(),
+                                                    "Virhe tapahtui jostain randomista syystä: " +
+                                                    e.getMessage(),
+                                                    Toast.LENGTH_LONG
+                                            ).show();
+                                        }
+                                    });
                                 }
                             }).setNegativeButton("Peruuta", null)
                             .setView(view)
