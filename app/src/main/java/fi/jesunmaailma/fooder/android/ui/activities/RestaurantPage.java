@@ -170,7 +170,7 @@ public class RestaurantPage extends AppCompatActivity {
             mbRemoveFromFavourites.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                  Toast.makeText(getApplicationContext(), "Lisää tämä.", Toast.LENGTH_LONG);
+                  //Toast.makeText(getApplicationContext(), "Lisää tämä.", Toast.LENGTH_LONG);
                   }
             });
         }
