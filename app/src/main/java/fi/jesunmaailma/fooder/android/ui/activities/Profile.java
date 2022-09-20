@@ -404,7 +404,7 @@ public class Profile extends AppCompatActivity {
                                         return;
                                     }
 
-                                    if (lastNameEdit.getText().toString().isEmpty()) {
+                                    if (lastName.getText().toString().isEmpty()) {
                                         lastName.setError("Sukunimi vaaditaan.");
                                         return;
                                     }
@@ -482,7 +482,7 @@ public class Profile extends AppCompatActivity {
                                         return;
                                     }
 
-                                    if (lastNameEdit.getText().toString().isEmpty()) {
+                                    if (lastName.getText().toString().isEmpty()) {
                                         lastName.setError("Sukunimi vaaditaan.");
                                         return;
                                     }
