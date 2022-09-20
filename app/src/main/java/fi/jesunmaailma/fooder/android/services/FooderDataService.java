@@ -45,6 +45,11 @@ public class FooderDataService {
         void onError(String error);
     }
 
+    public interface OnFavouriteDeletedDataResponse {
+        void onResponse(JSONObject response);
+        void onError(String error);
+    }
+
     public void getRestaurants(String url, OnRestaurantDataResponse onDataResponse) {
         RequestQueue queue = Volley.newRequestQueue(context);
 
@@ -119,6 +124,24 @@ public class FooderDataService {
 
     // POST-pyyntö endpointtiin
     public void addRestaurantToFavourites(String url, OnFavouriteAddedRestaurantDataResponse addedRestaurantDataResponse) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                addedRestaurantDataResponse.onResponse(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                addedRestaurantDataResponse.onError(error.getMessage());
+            }
+        });
+
+        queue.add(objectRequest);
+    }
+
+    public void deleteRestaurantFromFavourites(String url, OnFavouriteDeletedDataResponse onDataResponse) {
         RequestQueue queue = Volley.newRequestQueue(context);
 
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
