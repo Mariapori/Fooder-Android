@@ -46,7 +46,7 @@ public class FooderDataService {
     }
 
     public interface OnFavouriteDeletedDataResponse {
-        void onResponse(JSONObject response);
+        void onResponse(JSONArray response);
         void onError(String error);
     }
 
@@ -144,15 +144,15 @@ public class FooderDataService {
     public void deleteRestaurantFromFavourites(String url, OnFavouriteDeletedDataResponse onDataResponse) {
         RequestQueue queue = Volley.newRequestQueue(context);
 
-        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+        JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.POST, url, null, new Response.Listener<JSONArray>() {
             @Override
-            public void onResponse(JSONObject response) {
-                addedRestaurantDataResponse.onResponse(response);
+            public void onResponse(JSONArray response) {
+                onDataResponse.onResponse(response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                addedRestaurantDataResponse.onError(error.getMessage());
+                onDataResponse.onError(error.getMessage());
             }
         });
 

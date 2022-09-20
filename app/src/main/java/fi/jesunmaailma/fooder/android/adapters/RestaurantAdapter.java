@@ -9,19 +9,25 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fi.jesunmaailma.fooder.android.R;
+import fi.jesunmaailma.fooder.android.models.Favourite;
 import fi.jesunmaailma.fooder.android.models.Restaurant;
+import fi.jesunmaailma.fooder.android.services.FooderDataService;
+import fi.jesunmaailma.fooder.android.ui.activities.MainActivity;
 import fi.jesunmaailma.fooder.android.ui.activities.RestaurantPage;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ViewHolder> {
     public static final String RESTAURANT_DATA_TAG = "TAG";
     List<Restaurant> restaurantList;
+    List<Favourite> favouriteList;
     View view;
 
-    public RestaurantAdapter(List<Restaurant> restaurantList) {
+    public RestaurantAdapter(List<Restaurant> restaurantList, List<Favourite> favouriteList) {
         this.restaurantList = restaurantList;
+        this.favouriteList = favouriteList;
     }
 
     @NonNull
@@ -44,8 +50,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(), RestaurantPage.class);
                 i.putExtra("restaurant", restaurantList.get(position));
-                //TODO: Tänne pitää hakea tieto onko ravintola jo suosikeissa.
-                //i.putExtra("isFavorite",totuusarvo);
+                i.putExtra("isFavorite",isFavorite(restaurant));
+
                 v.getContext().startActivity(i);
             }
         });
@@ -65,5 +71,15 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
             restaurantName = itemView.findViewById(R.id.restaurant_name);
             restaurantCity = itemView.findViewById(R.id.restaurant_city);
         }
+    }
+
+    public boolean isFavorite(Restaurant restaurant){
+        for (int i = 0; i < favouriteList.size(); i++) {
+            Favourite fav = favouriteList.get(i);
+            if(fav.getRestaurantId() == restaurant.getId()){
+                return true;
+            }
+        }
+        return false;
     }
 }

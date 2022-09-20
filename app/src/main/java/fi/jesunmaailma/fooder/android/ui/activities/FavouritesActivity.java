@@ -233,4 +233,21 @@ public class FavouritesActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        swipeRefreshLayout.setVisibility(View.VISIBLE);
+        rvFavouritesList.setVisibility(View.GONE);
+        authRequiredContainer.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+
+        getFavourites(
+                String.format(
+                        "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
+                        getResources().getString(R.string.digiruokalista_api_base_url),
+                        user.getEmail()
+                )
+        );
+    }
 }
