@@ -178,6 +178,9 @@ public class RestaurantPage extends AppCompatActivity {
                      ));
                  }
              });
+        } else {
+            mbAddToFavourites.setVisibility(View.GONE);
+            mbRemoveFromFavourites.setVisibility(View.GONE);
         }
     }
 

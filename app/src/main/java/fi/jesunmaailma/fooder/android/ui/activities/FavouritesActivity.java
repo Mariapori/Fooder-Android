@@ -168,7 +168,7 @@ public class FavouritesActivity extends AppCompatActivity {
 
                 favouriteList.clear();
 
-                Log.d(RESTAURANT_DATA_TAG, "onResponse: " + response);
+                // Log.d(RESTAURANT_DATA_TAG, "onResponse: " + response);
 
                 for (int i = 0; i < response.length(); i++) {
                     try {
