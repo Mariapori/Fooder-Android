@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -65,6 +66,8 @@ public class FavouritesActivity extends AppCompatActivity {
 
     FooderDataService service;
 
+    TextView NoItems;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +91,7 @@ public class FavouritesActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
+        NoItems = findViewById(R.id.txtTyhjaa);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
 
         rvFavouritesList = findViewById(R.id.rv_favourites_list);
@@ -111,6 +114,12 @@ public class FavouritesActivity extends AppCompatActivity {
 
         service = new FooderDataService(this);
 
+        if(favouriteList.size() == 0){
+            NoItems.setVisibility(View.VISIBLE);
+        }else{
+            NoItems.setVisibility(View.GONE);
+        }
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -126,6 +135,11 @@ public class FavouritesActivity extends AppCompatActivity {
                                     user.getEmail()
                             )
                     );
+                    if(favouriteList.size() == 0){
+                        NoItems.setVisibility(View.VISIBLE);
+                    }else{
+                        NoItems.setVisibility(View.GONE);
+                    }
                 }
             }
         });
@@ -154,6 +168,11 @@ public class FavouritesActivity extends AppCompatActivity {
                             user.getEmail()
                     )
             );
+            if(favouriteList.size() == 0){
+                NoItems.setVisibility(View.VISIBLE);
+            }else{
+                NoItems.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -187,10 +206,17 @@ public class FavouritesActivity extends AppCompatActivity {
                             }
                         }
                         favouriteList.add(favourite);
+
                         adapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
+                }
+                if(favouriteList.size() == 0){
+                    NoItems.setVisibility(View.VISIBLE);
+                }else{
+                    NoItems.setVisibility(View.GONE);
                 }
             }
 
@@ -219,6 +245,14 @@ public class FavouritesActivity extends AppCompatActivity {
                                         user.getEmail()
                                 )
                         );
+                        if(user != null){
+                            if(favouriteList.size() == 0){
+                                NoItems.setVisibility(View.VISIBLE);
+                            }else{
+                                NoItems.setVisibility(View.GONE);
+                            }
+                        }
+
                     }
                 });
                 snackbar.show();
@@ -249,5 +283,13 @@ public class FavouritesActivity extends AppCompatActivity {
                         user.getEmail()
                 )
         );
+        if(user != null){
+            if(favouriteList.size() == 0){
+                NoItems.setVisibility(View.VISIBLE);
+            }else{
+                NoItems.setVisibility(View.GONE);
+            }
+        }
+
     }
 }
