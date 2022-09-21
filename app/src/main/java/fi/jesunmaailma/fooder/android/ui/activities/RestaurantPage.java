@@ -59,7 +59,6 @@ public class RestaurantPage extends AppCompatActivity {
     FoodAdapter foodAdapter;
 
     Restaurant restaurant;
-    Favourite favourite;
 
     FooderDataService service;
 
@@ -168,18 +167,50 @@ public class RestaurantPage extends AppCompatActivity {
                 }
             });
 
-            /* mbRemoveFromFavourites.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                  deleteFromFavourites(String.format(
-                    "%sPoistaSuosikki?Kayttaja=%s&SuosikkiID=%s&secret=AccessToken",
-                    getResources().getString(R.string.digiruokalista_api_base_url),
-                    user.getEmail(),
-                    
-                  ))
-                }
-            }); */
+             mbRemoveFromFavourites.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View v) {
+                     removeFromFavourites(String.format(
+                             "%sPoistaSuosikki?Kayttaja=%s&YritysID=%s&secret=AccessToken",
+                             getResources().getString(R.string.digiruokalista_api_base_url),
+                             user.getEmail(),
+                             restaurant.getId()
+                     ));
+                 }
+             });
         }
+    }
+
+    private void removeFromFavourites(String removedRestarauntURL) {
+        service.deleteRestaurantFromFavourites(removedRestarauntURL, new FooderDataService.OnFavouriteDeletedDataResponse() {
+            @Override
+            public void onResponse(JSONArray response) {
+                Snackbar snackbar = Snackbar.make(
+                        snackBar,
+                        "Ravintola poistettu suosikeista.",
+                        Snackbar.LENGTH_LONG
+                );
+                snackbar.setDuration(5000);
+                snackbar.show();
+
+                mbAddToFavourites.setVisibility(View.VISIBLE);
+                mbRemoveFromFavourites.setVisibility(View.GONE);
+
+                getFavourites(
+                        String.format(
+                                "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
+                                getResources().getString(R.string.digiruokalista_api_base_url),
+                                user.getEmail()
+                        )
+                );
+
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.e(RESTAURANT_DATA_TAG, "onError: " + error);
+            }
+        });
     }
 
     private void addToFavourites(String addRestaurantURL) {
@@ -213,36 +244,7 @@ public class RestaurantPage extends AppCompatActivity {
         });
     }
 
-    /* private void deleteFromFavourites(String deleteRestaurantURL) {
-        service.deleteRestaurantFromFavourites(deleteRestaurantURL, new FooderDataService.OnFavouriteDeletedDataResponse() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Snackbar snackbar = Snackbar.make(
-                        snackBar,
-                        "Ravintola poistettu suosikeista.",
-                        Snackbar.LENGTH_LONG
-                );
-                snackbar.setDuration(5000);
-                snackbar.show();
 
-                mbAddToFavourites.setVisibility(View.VISIBLE);
-                mbRemoveFromFavourites.setVisibility(View.GONE);
-
-                getFavourites(
-                        String.format(
-                                "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
-                                getResources().getString(R.string.digiruokalista_api_base_url),
-                                user.getEmail()
-                        )
-                );
-            }
-
-            @Override
-            public void onError(String error) {
-                Log.e(RESTAURANT_DATA_TAG, "onError: " + error);
-            }
-        });
-    } */
 
     public void getFavourites(String url) {
         service.getUserFavourites(url, new FooderDataService.OnFavouriteDataResponse() {

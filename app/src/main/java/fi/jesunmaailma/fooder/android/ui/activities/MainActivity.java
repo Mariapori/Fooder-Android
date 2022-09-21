@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -39,7 +40,9 @@ import java.util.List;
 import java.util.Objects;
 
 import fi.jesunmaailma.fooder.android.R;
+import fi.jesunmaailma.fooder.android.adapters.FavouriteAdapter;
 import fi.jesunmaailma.fooder.android.adapters.RestaurantAdapter;
+import fi.jesunmaailma.fooder.android.models.Favourite;
 import fi.jesunmaailma.fooder.android.models.Restaurant;
 import fi.jesunmaailma.fooder.android.services.FooderDataService;
 
@@ -72,6 +75,9 @@ public class MainActivity extends AppCompatActivity
 
     RestaurantAdapter restaurantAdapter;
     public static List<Restaurant> restaurantList;
+
+    List<Favourite> favouriteList;
+    Favourite favourite;
 
     FooderDataService service;
 
@@ -117,8 +123,9 @@ public class MainActivity extends AppCompatActivity
         snackBar = findViewById(R.id.snackbar);
 
         restaurantList = new ArrayList<>();
+        favouriteList = new ArrayList<>();
 
-        restaurantAdapter = new RestaurantAdapter(restaurantList);
+        restaurantAdapter = new RestaurantAdapter(restaurantList, favouriteList);
         rvRestaurantList.setAdapter(restaurantAdapter);
 
         LinearLayoutManager manager = new LinearLayoutManager(this);
@@ -132,6 +139,16 @@ public class MainActivity extends AppCompatActivity
                 swipeRefreshLayout.setRefreshing(false);
                 progressBar.setVisibility(View.VISIBLE);
                 rvRestaurantList.setVisibility(View.GONE);
+
+                if (user != null) {
+                    getFavourites(
+                            String.format(
+                                    "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
+                                    getResources().getString(R.string.digiruokalista_api_base_url),
+                                    user.getEmail()
+                            )
+                    );
+                }
 
                 getRestaurants(
                         String.format(
@@ -175,6 +192,30 @@ public class MainActivity extends AppCompatActivity
                 }
             });
             getRestaurants(getResources().getString(R.string.digiruokalista_api_base_url) + "HaeYritykset");
+            if (user != null) {
+                getFavourites(
+                        String.format(
+                                "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
+                                getResources().getString(R.string.digiruokalista_api_base_url),
+                                user.getEmail()
+                        )
+                );
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getRestaurants(getResources().getString(R.string.digiruokalista_api_base_url) + "HaeYritykset");
+        if(user != null){
+            getFavourites(
+                    String.format(
+                            "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
+                            getResources().getString(R.string.digiruokalista_api_base_url),
+                            user.getEmail()
+                    )
+            );
         }
     }
 
@@ -233,13 +274,80 @@ public class MainActivity extends AppCompatActivity
                         getRestaurants(
                                 getResources().getString(R.string.digiruokalista_api_base_url) + "HaeYritykset"
                         );
+                        if(user != null){
+                            getFavourites(
+                                    String.format(
+                                            "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
+                                            getResources().getString(R.string.digiruokalista_api_base_url),
+                                            user.getEmail()
+                                    )
+                            );
+                        }
                     }
                 });
                 snackbar.show();
             }
         });
     }
+    public void getFavourites(String url) {
+        service.getUserFavourites(url, new FooderDataService.OnFavouriteDataResponse() {
+            @Override
+            public void onResponse(JSONArray response) {
+                favouriteList.clear();
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONObject favouriteData = response.getJSONObject(i);
 
+                        favourite = new Favourite();
+
+                        favourite.setFavoriteId(favouriteData.getInt("id"));
+                        favourite.setRestaurantId(favouriteData.getInt("yritysID"));
+                        for (int j = 0; j < MainActivity.restaurantList.size(); j++) {
+                            Restaurant rafla = MainActivity.restaurantList.get(j);
+                            if(favourite.getRestaurantId() == rafla.getId()){
+                                favourite.setRestaurantName(rafla.getName());
+                                favourite.setRestaurantCity(rafla.getCity());
+                                break;
+                            }
+                        }
+                        favouriteList.add(favourite);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+
+                progressBar.setVisibility(View.GONE);
+
+                Snackbar snackbar = Snackbar.make(
+                        snackBar,
+                        "Hupsista!\nTarkista Internet-yhteys.",
+                        Snackbar.LENGTH_INDEFINITE
+                );
+                snackbar.setAction("Päivitä", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        progressBar.setVisibility(View.VISIBLE);
+                        swipeRefreshLayout.setVisibility(View.GONE);
+                        getRestaurants(
+                                getResources().getString(R.string.digiruokalista_api_base_url) + "HaeYritykset"
+                        );
+                        getFavourites(
+                                String.format(
+                                        "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
+                                        getResources().getString(R.string.digiruokalista_api_base_url),
+                                        user.getEmail()
+                                )
+                        );
+                    }
+                });
+                snackbar.show();
+            }
+        });
+    }
     public static void closeDrawer(DrawerLayout drawer) {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -255,7 +363,17 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.mi_favourites:
                 closeDrawer(drawer);
-                startActivity(new Intent(getApplicationContext(), FavouritesActivity.class));
+                if(user != null) {
+                    startActivity(new Intent(getApplicationContext(), FavouritesActivity.class));
+                }else{
+                    Snackbar snackbar = Snackbar.make(
+                            snackBar,
+                            "Et ole kirjautunut sisään.",
+                            Snackbar.LENGTH_LONG
+                    );
+                    snackbar.setDuration(5000);
+                    snackbar.show();
+                }
                 break;
             case R.id.mi_info:
                 closeDrawer(drawer);
