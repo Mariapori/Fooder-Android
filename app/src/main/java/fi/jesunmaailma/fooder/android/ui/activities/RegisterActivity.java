@@ -32,6 +32,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -50,6 +51,10 @@ import fi.jesunmaailma.fooder.android.R;
 public class RegisterActivity extends AppCompatActivity {
     public static final int GOOGLE_REQ_CODE = 100;
 
+    public static final String id = "id";
+    public static final String name = "name";
+    public static final String image = "image";
+
     EditText firstNameEdit, lastNameEdit, emailEdit, passwordEdit;
     MaterialButton registerBtn;
     TextView btnReadMore, loginActivityBtn, btnForgotPassword;
@@ -58,6 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     FirebaseAuth auth;
     FirebaseUser user;
+    FirebaseAnalytics analytics;
     FirebaseFirestore database;
 
     ProgressBar pbLoading;
@@ -105,6 +111,13 @@ public class RegisterActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         database = FirebaseFirestore.getInstance();
+        analytics = FirebaseAnalytics.getInstance(this);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, image);
+        analytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(
                 GoogleSignInOptions.DEFAULT_SIGN_IN

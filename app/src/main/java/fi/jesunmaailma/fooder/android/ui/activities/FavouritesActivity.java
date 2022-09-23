@@ -56,7 +56,6 @@ public class FavouritesActivity extends AppCompatActivity {
 
     CoordinatorLayout snackBar;
 
-    LinearLayout authRequiredContainer;
     MaterialButton mbLogin;
 
     FavouriteAdapter adapter;
@@ -96,8 +95,6 @@ public class FavouritesActivity extends AppCompatActivity {
 
         rvFavouritesList = findViewById(R.id.rv_favourites_list);
 
-        authRequiredContainer = findViewById(R.id.auth_required_container);
-
         mbLogin = findViewById(R.id.btn_sign_in);
 
         progressBar = findViewById(R.id.progressBar);
@@ -114,9 +111,9 @@ public class FavouritesActivity extends AppCompatActivity {
 
         service = new FooderDataService(this);
 
-        if(favouriteList.size() == 0){
+        if (favouriteList.size() == 0) {
             NoItems.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             NoItems.setVisibility(View.GONE);
         }
 
@@ -135,9 +132,9 @@ public class FavouritesActivity extends AppCompatActivity {
                                     user.getEmail()
                             )
                     );
-                    if(favouriteList.size() == 0){
+                    if (favouriteList.size() == 0) {
                         NoItems.setVisibility(View.VISIBLE);
-                    }else{
+                    } else {
                         NoItems.setVisibility(View.GONE);
                     }
                 }
@@ -147,7 +144,6 @@ public class FavouritesActivity extends AppCompatActivity {
         if (user == null) {
             swipeRefreshLayout.setVisibility(View.GONE);
             rvFavouritesList.setVisibility(View.GONE);
-            authRequiredContainer.setVisibility(View.VISIBLE);
 
             mbLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -158,7 +154,6 @@ public class FavouritesActivity extends AppCompatActivity {
         } else {
             swipeRefreshLayout.setVisibility(View.VISIBLE);
             rvFavouritesList.setVisibility(View.GONE);
-            authRequiredContainer.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
 
             getFavourites(
@@ -168,9 +163,9 @@ public class FavouritesActivity extends AppCompatActivity {
                             user.getEmail()
                     )
             );
-            if(favouriteList.size() == 0){
+            if (favouriteList.size() == 0) {
                 NoItems.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 NoItems.setVisibility(View.GONE);
             }
         }
@@ -199,7 +194,7 @@ public class FavouritesActivity extends AppCompatActivity {
                         favourite.setRestaurantId(favouriteData.getInt("yritysID"));
                         for (int j = 0; j < MainActivity.restaurantList.size(); j++) {
                             Restaurant rafla = MainActivity.restaurantList.get(j);
-                            if(favourite.getRestaurantId() == rafla.getId()){
+                            if (favourite.getRestaurantId() == rafla.getId()) {
                                 favourite.setRestaurantName(rafla.getName());
                                 favourite.setRestaurantCity(rafla.getCity());
                                 break;
@@ -213,9 +208,9 @@ public class FavouritesActivity extends AppCompatActivity {
                     }
 
                 }
-                if(favouriteList.size() == 0){
+                if (favouriteList.size() == 0) {
                     NoItems.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     NoItems.setVisibility(View.GONE);
                 }
             }
@@ -245,10 +240,10 @@ public class FavouritesActivity extends AppCompatActivity {
                                         user.getEmail()
                                 )
                         );
-                        if(user != null){
-                            if(favouriteList.size() == 0){
+                        if (user != null) {
+                            if (favouriteList.size() == 0) {
                                 NoItems.setVisibility(View.VISIBLE);
-                            }else{
+                            } else {
                                 NoItems.setVisibility(View.GONE);
                             }
                         }
@@ -273,7 +268,6 @@ public class FavouritesActivity extends AppCompatActivity {
         super.onResume();
         swipeRefreshLayout.setVisibility(View.VISIBLE);
         rvFavouritesList.setVisibility(View.GONE);
-        authRequiredContainer.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
 
         getFavourites(
@@ -283,10 +277,10 @@ public class FavouritesActivity extends AppCompatActivity {
                         user.getEmail()
                 )
         );
-        if(user != null){
-            if(favouriteList.size() == 0){
+        if (user != null) {
+            if (favouriteList.size() == 0) {
                 NoItems.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 NoItems.setVisibility(View.GONE);
             }
         }

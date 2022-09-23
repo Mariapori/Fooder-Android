@@ -51,9 +51,9 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
                 Favourite fav = favouriteList.get(position);
                 for (int j = 0; j < MainActivity.restaurantList.size(); j++) {
                     Restaurant res = MainActivity.restaurantList.get(j);
-                    if(res.getId() == fav.getRestaurantId()){
+                    if (res.getId() == fav.getRestaurantId()) {
                         restaurant = MainActivity.restaurantList.get(j);
-                        i.putExtra("isFavorite",true);
+                        i.putExtra("isFavorite", true);
                         break;
                     }
                 }

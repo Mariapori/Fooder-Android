@@ -13,16 +13,28 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.browser.customtabs.CustomTabsIntent;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.analytics.FirebaseAnalytics;
+
+import java.util.Calendar;
+import java.util.Date;
 
 import fi.jesunmaailma.fooder.android.BuildConfig;
 import fi.jesunmaailma.fooder.android.R;
 
 public class InfoActivity extends AppCompatActivity {
+    public static final String id = "id";
+    public static final String name = "name";
+    public static final String image = "image";
+
     TextView tvCopyright, tvVersion;
     MaterialButton mbGithubRepo;
 
     ActionBar actionBar;
     Toolbar toolbar;
+
+    FirebaseAnalytics analytics;
+
+    Calendar calendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +50,15 @@ public class InfoActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        analytics = FirebaseAnalytics.getInstance(this);
+        calendar = Calendar.getInstance();
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, image);
+        analytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
         tvCopyright = findViewById(R.id.tv_copyright);
         mbGithubRepo = findViewById(R.id.mb_github_repo);
         tvVersion = findViewById(R.id.tv_version);
@@ -45,7 +66,7 @@ public class InfoActivity extends AppCompatActivity {
         tvCopyright.setText(
                 String.format(
                         "© %s Jesun Maailma",
-                        "2022"
+                        calendar.get(Calendar.YEAR)
                 )
         );
 

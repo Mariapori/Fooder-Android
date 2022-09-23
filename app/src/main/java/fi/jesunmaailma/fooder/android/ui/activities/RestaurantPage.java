@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -37,6 +38,9 @@ import fi.jesunmaailma.fooder.android.services.FooderDataService;
 public class RestaurantPage extends AppCompatActivity {
     // VAIN virheenjäljitystä varten.
     public static final String RESTAURANT_DATA_TAG = "TAG";
+    public static final String id = "id";
+    public static final String name = "name";
+    public static final String image = "image";
 
     ActionBar actionBar;
     Toolbar toolbar;
@@ -48,6 +52,7 @@ public class RestaurantPage extends AppCompatActivity {
     // Firebase Auth
     FirebaseAuth auth;
     FirebaseUser user;
+    FirebaseAnalytics analytics;
 
     ProgressBar progressBar;
 
@@ -78,7 +83,7 @@ public class RestaurantPage extends AppCompatActivity {
         }
 
         restaurant = (Restaurant) getIntent().getSerializableExtra("restaurant");
-        AlreadyFavorite = (boolean) getIntent().getBooleanExtra("isFavorite",false);
+        AlreadyFavorite = (boolean) getIntent().getBooleanExtra("isFavorite", false);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
 
         tvRestaurantName = findViewById(R.id.tv_restaurant_name);
@@ -91,10 +96,10 @@ public class RestaurantPage extends AppCompatActivity {
         mbAddToFavourites = findViewById(R.id.mb_add_to_favourites);
         mbRemoveFromFavourites = findViewById(R.id.mb_remove_from_favourites);
 
-        if(AlreadyFavorite){
+        if (AlreadyFavorite) {
             mbAddToFavourites.setVisibility(View.GONE);
             mbRemoveFromFavourites.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mbAddToFavourites.setVisibility(View.VISIBLE);
             mbRemoveFromFavourites.setVisibility(View.GONE);
         }
@@ -105,6 +110,13 @@ public class RestaurantPage extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
+        analytics = FirebaseAnalytics.getInstance(this);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, image);
+        analytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
         service = new FooderDataService(this);
 
@@ -126,35 +138,47 @@ public class RestaurantPage extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
 
-                getRestaurantById(
-                        String.format(
-                                "%sHaeYritys?id=%s",
-                                getResources().getString(R.string.digiruokalista_api_base_url),
-                                restaurant.getId()
-                        )
-                );
-                getFavourites(String.format(
-                        "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
-                        getResources().getString(R.string.digiruokalista_api_base_url),
-                        user.getEmail()
-                ));
+                if (user != null) {
+                    getRestaurantById(
+                            String.format(
+                                    "%sHaeYritys?id=%s",
+                                    getResources().getString(R.string.digiruokalista_api_base_url),
+                                    restaurant.getId()
+                            )
+                    );
+                    getFavourites(String.format(
+                            "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
+                            getResources().getString(R.string.digiruokalista_api_base_url),
+                            user.getEmail()
+                    ));
+                } else {
+                    getRestaurantById(
+                            String.format(
+                                    "%sHaeYritys?id=%s",
+                                    getResources().getString(R.string.digiruokalista_api_base_url),
+                                    restaurant.getId()
+                            )
+                    );
+                    mbAddToFavourites.setVisibility(View.GONE);
+                    mbRemoveFromFavourites.setVisibility(View.GONE);
+                }
             }
         });
 
-        getRestaurantById(
-                String.format(
-                        "%sHaeYritys?id=%s",
-                        getResources().getString(R.string.digiruokalista_api_base_url),
-                        restaurant.getId()
-                )
-        );
-        getFavourites(String.format(
-                "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
-                getResources().getString(R.string.digiruokalista_api_base_url),
-                user.getEmail()
-        ));
-
         if (user != null) {
+            getRestaurantById(
+                    String.format(
+                            "%sHaeYritys?id=%s",
+                            getResources().getString(R.string.digiruokalista_api_base_url),
+                            restaurant.getId()
+                    )
+            );
+            getFavourites(String.format(
+                    "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
+                    getResources().getString(R.string.digiruokalista_api_base_url),
+                    user.getEmail()
+            ));
+
             mbAddToFavourites.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -167,18 +191,26 @@ public class RestaurantPage extends AppCompatActivity {
                 }
             });
 
-             mbRemoveFromFavourites.setOnClickListener(new View.OnClickListener() {
-                 @Override
-                 public void onClick(View v) {
-                     removeFromFavourites(String.format(
-                             "%sPoistaSuosikki?Kayttaja=%s&YritysID=%s&secret=AccessToken",
-                             getResources().getString(R.string.digiruokalista_api_base_url),
-                             user.getEmail(),
-                             restaurant.getId()
-                     ));
-                 }
-             });
+            mbRemoveFromFavourites.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    removeFromFavourites(String.format(
+                            "%sPoistaSuosikki?Kayttaja=%s&YritysID=%s&secret=AccessToken",
+                            getResources().getString(R.string.digiruokalista_api_base_url),
+                            user.getEmail(),
+                            restaurant.getId()
+                    ));
+                }
+            });
         } else {
+            getRestaurantById(
+                    String.format(
+                            "%sHaeYritys?id=%s",
+                            getResources().getString(R.string.digiruokalista_api_base_url),
+                            restaurant.getId()
+                    )
+            );
+
             mbAddToFavourites.setVisibility(View.GONE);
             mbRemoveFromFavourites.setVisibility(View.GONE);
         }
@@ -246,7 +278,6 @@ public class RestaurantPage extends AppCompatActivity {
             }
         });
     }
-
 
 
     public void getFavourites(String url) {

@@ -86,24 +86,6 @@ public class FooderDataService {
         queue.add(objectRequest);
     }
 
-    public void getFoodMenuById(String url, OnFoodMenuByIdDataResponse onDataResponse) {
-        RequestQueue queue = Volley.newRequestQueue(context);
-
-        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                onDataResponse.onResponse(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                onDataResponse.onError(error.getMessage());
-            }
-        });
-
-        queue.add(objectRequest);
-    }
-
     public void getUserFavourites(String url, OnFavouriteDataResponse favouriteDataResponse) {
         RequestQueue queue = Volley.newRequestQueue(context);
 

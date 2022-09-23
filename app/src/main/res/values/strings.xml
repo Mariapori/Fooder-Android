@@ -4,17 +4,17 @@
     <string name="closeNavDrawer" translatable="false">Sulje vetovalikko</string>
     <string name="digiruokalista_api_base_url" translatable="false">https://digiruokalista.com/api/v1/</string>
     <string name="auth_required_info" translatable="false">Kirjaudu sisään, jotta voit nähdä sisältömme.</string>
-    <string name="first_name" translatable="false">Etunimi <font color="#FF03DAC5">*</font></string>
-    <string name="last_name" translatable="false">Sukunimi <font color="#FF03DAC5">*</font></string>
+    <string name="first_name" translatable="false">Etunimi <font color="#006404">*</font></string>
+    <string name="last_name" translatable="false">Sukunimi <font color="#006404">*</font></string>
     <string name="email" translatable="false">
         Sähköpostiosoite
-        <font color="#02CCC6">
+        <font color="#006404">
             *
         </font>
     </string>
     <string name="password" translatable="false">
         Salasana
-        <font color="#02CCC6">
+        <font color="#006404">
             *
         </font>
     </string>

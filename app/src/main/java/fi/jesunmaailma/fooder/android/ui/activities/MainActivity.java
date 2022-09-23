@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         getRestaurants(getResources().getString(R.string.digiruokalista_api_base_url) + "HaeYritykset");
-        if(user != null){
+        if (user != null) {
             getFavourites(
                     String.format(
                             "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
@@ -274,7 +274,7 @@ public class MainActivity extends AppCompatActivity
                         getRestaurants(
                                 getResources().getString(R.string.digiruokalista_api_base_url) + "HaeYritykset"
                         );
-                        if(user != null){
+                        if (user != null) {
                             getFavourites(
                                     String.format(
                                             "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
@@ -289,6 +289,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
+
     public void getFavourites(String url) {
         service.getUserFavourites(url, new FooderDataService.OnFavouriteDataResponse() {
             @Override
@@ -304,7 +305,7 @@ public class MainActivity extends AppCompatActivity
                         favourite.setRestaurantId(favouriteData.getInt("yritysID"));
                         for (int j = 0; j < MainActivity.restaurantList.size(); j++) {
                             Restaurant rafla = MainActivity.restaurantList.get(j);
-                            if(favourite.getRestaurantId() == rafla.getId()){
+                            if (favourite.getRestaurantId() == rafla.getId()) {
                                 favourite.setRestaurantName(rafla.getName());
                                 favourite.setRestaurantCity(rafla.getCity());
                                 break;
@@ -348,6 +349,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
+
     public static void closeDrawer(DrawerLayout drawer) {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -363,12 +365,12 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.mi_favourites:
                 closeDrawer(drawer);
-                if(user != null) {
+                if (user != null) {
                     startActivity(new Intent(getApplicationContext(), FavouritesActivity.class));
-                }else{
+                } else {
                     Snackbar snackbar = Snackbar.make(
                             snackBar,
-                            "Et ole kirjautunut sisään.",
+                            "Et ole kirjautunut sisään.\nTili vaaditaan, jotta voit lisätä suosikkeja.",
                             Snackbar.LENGTH_LONG
                     );
                     snackbar.setDuration(5000);

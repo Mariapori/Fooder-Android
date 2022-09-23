@@ -299,12 +299,11 @@ public class Profile extends AppCompatActivity {
                                                                 Toast.LENGTH_LONG
                                                         ).show();
                                                         startActivity(
-                                                                new Intent(getApplicationContext(), Profile.class)
+                                                                new Intent(getApplicationContext(), MainActivity.class)
                                                         .addFlags(
                                                                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
                                                         ));
                                                         finish();
-                                                        overridePendingTransition(0, 0);
                                                     }
                                                 }
                                             });
@@ -350,12 +349,11 @@ public class Profile extends AppCompatActivity {
                                                     Toast.LENGTH_LONG
                                             ).show();
                                             startActivity(
-                                                    new Intent(getApplicationContext(), Profile.class)
+                                                    new Intent(getApplicationContext(), MainActivity.class)
                                             .addFlags(
                                                     Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
                                             ));
                                             finish();
-                                            overridePendingTransition(0, 0);
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                         @Override
@@ -437,12 +435,11 @@ public class Profile extends AppCompatActivity {
                                                                 Toast.LENGTH_LONG
                                                         ).show();
                                                         startActivity(
-                                                                new Intent(getApplicationContext(), Profile.class)
+                                                                new Intent(getApplicationContext(), MainActivity.class)
                                                         .addFlags(
                                                                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
                                                         ));
                                                         finish();
-                                                        overridePendingTransition(0, 0);
                                                     }
                                                 }
                                             });
@@ -505,12 +502,11 @@ public class Profile extends AppCompatActivity {
                                                 Toast.LENGTH_LONG
                                             ).show();
                                             startActivity(
-                                                new Intent(getApplicationContext(), Profile.class)
+                                                new Intent(getApplicationContext(), MainActivity.class)
                                             .addFlags(
                                                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
                                             ));
                                             finish();
-                                            overridePendingTransition(0, 0);
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                         @Override
@@ -569,12 +565,11 @@ public class Profile extends AppCompatActivity {
                                         Toast.LENGTH_LONG
                                 ).show();
                                 startActivity(
-                                        new Intent(getApplicationContext(), Profile.class)
+                                        new Intent(getApplicationContext(), MainActivity.class)
                                                 .addFlags(
                                                         Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
                                                 ));
                                 finish();
-                                overridePendingTransition(0, 0);
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
