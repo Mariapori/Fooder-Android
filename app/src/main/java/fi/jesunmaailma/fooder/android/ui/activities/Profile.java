@@ -128,19 +128,58 @@ public class Profile extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (swNotifications.isChecked()) {
-                        //TODO: Notifikaatio tokenin lähetys apille.
-                        Toast.makeText(
-                                getApplicationContext(),
-                                "Ilmoitukset sallittu.",
-                                Toast.LENGTH_LONG
-                        ).show();
+                        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+                            @Override
+                            public void onComplete(@NonNull Task<String> task) {
+                                service.addTokenForNotifications(String.format("https://digiruokalista.com/api/v1/AddTokenForNotifications?Token=%s", task.getResult()), new FooderDataService.OnTokenAddedForNotificationsResponse() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        Toast.makeText(
+                                                getApplicationContext(),
+                                                "Ilmoitukset sallittu.",
+                                                Toast.LENGTH_LONG
+                                        ).show();
+                                    }
+
+                                    @Override
+                                    public void onError(String error) {
+                                        Toast.makeText(
+                                                getApplicationContext(),
+                                                "Virhe!",
+                                                Toast.LENGTH_LONG
+                                        ).show();
+                                        swNotifications.setChecked(false);
+                                    }
+                                });
+
+                            }
+                        });
                     } else {
-                        //TODO: Notifikaatio tokenin poisto apin kautta.
-                        Toast.makeText(
-                                getApplicationContext(),
-                                "Ilmoitukset kielletty.",
-                                Toast.LENGTH_LONG
-                        ).show();
+                        FirebaseMessaging.getInstance().deleteToken().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                service.deleteTokenFromNotifications(String.format("https://digiruokalista.com/api/v1/RemoveTokenForNotifications?Token=%s", task.getResult()), new FooderDataService.OnTokenDeletedFromNotificationsResponse() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        Toast.makeText(
+                                                getApplicationContext(),
+                                                "Ilmoitukset estetty.",
+                                                Toast.LENGTH_LONG
+                                        ).show();
+                                    }
+
+                                    @Override
+                                    public void onError(String error) {
+                                        Toast.makeText(
+                                                getApplicationContext(),
+                                                "Virhe!",
+                                                Toast.LENGTH_LONG
+                                        ).show();
+                                        swNotifications.setChecked(true);
+                                    }
+                                });
+                            }
+                        });
                     }
                 }
             });
