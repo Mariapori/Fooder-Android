@@ -30,11 +30,6 @@ public class FooderDataService {
         void onError(String error);
     }
 
-    public interface OnFoodMenuByIdDataResponse {
-        void onResponse(JSONObject response);
-        void onError(String error);
-    }
-
     public interface OnFavouriteAddedRestaurantDataResponse {
         void onResponse(JSONObject response);
         void onError(String error);
@@ -50,6 +45,7 @@ public class FooderDataService {
         void onError(String error);
     }
 
+    // GET-pyynnöt endpointteihin
     public void getRestaurants(String url, OnRestaurantDataResponse onDataResponse) {
         RequestQueue queue = Volley.newRequestQueue(context);
 
@@ -104,7 +100,7 @@ public class FooderDataService {
         queue.add(arrayRequest);
     }
 
-    // POST-pyyntö endpointtiin
+    // POST-pyynnöt endpointteihin
     public void addRestaurantToFavourites(String url, OnFavouriteAddedRestaurantDataResponse addedRestaurantDataResponse) {
         RequestQueue queue = Volley.newRequestQueue(context);
 

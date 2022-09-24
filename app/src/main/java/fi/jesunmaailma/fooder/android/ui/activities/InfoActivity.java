@@ -1,5 +1,7 @@
 package fi.jesunmaailma.fooder.android.ui.activities;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -26,7 +28,7 @@ public class InfoActivity extends AppCompatActivity {
     public static final String name = "name";
     public static final String image = "image";
 
-    TextView tvCopyright, tvVersion;
+    TextView tvCopyright, tvVersion, tvOpenUnsplash;
     MaterialButton mbGithubRepo;
 
     ActionBar actionBar;
@@ -36,6 +38,7 @@ public class InfoActivity extends AppCompatActivity {
 
     Calendar calendar;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -62,6 +65,7 @@ public class InfoActivity extends AppCompatActivity {
         tvCopyright = findViewById(R.id.tv_copyright);
         mbGithubRepo = findViewById(R.id.mb_github_repo);
         tvVersion = findViewById(R.id.tv_version);
+        tvOpenUnsplash = findViewById(R.id.tvOpenUnsplash);
 
         tvCopyright.setText(
                 String.format(
@@ -82,6 +86,21 @@ public class InfoActivity extends AppCompatActivity {
 
                 CustomTabsIntent intent = builder.build();
                 intent.launchUrl(InfoActivity.this, Uri.parse(githubRepoUrl));
+            }
+        });
+
+        tvOpenUnsplash.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int toolbarColor = getResources().getColor(R.color.green);
+                String unsplashUrl = "https://unsplash.com";
+
+                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                builder.setShowTitle(true);
+                builder.setToolbarColor(toolbarColor);
+
+                CustomTabsIntent intent = builder.build();
+                intent.launchUrl(InfoActivity.this, Uri.parse(unsplashUrl));
             }
         });
 

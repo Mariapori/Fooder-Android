@@ -9,16 +9,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,7 +34,6 @@ import fi.jesunmaailma.fooder.android.models.Restaurant;
 import fi.jesunmaailma.fooder.android.services.FooderDataService;
 
 public class FavouritesActivity extends AppCompatActivity {
-    public static final String RESTAURANT_DATA_TAG = "TAG";
     public static final String id = "id";
     public static final String name = "name";
     public static final String image = "image";
@@ -55,8 +50,6 @@ public class FavouritesActivity extends AppCompatActivity {
     FirebaseAnalytics analytics;
 
     CoordinatorLayout snackBar;
-
-    MaterialButton mbLogin;
 
     FavouriteAdapter adapter;
     List<Favourite> favouriteList;
@@ -94,8 +87,6 @@ public class FavouritesActivity extends AppCompatActivity {
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
 
         rvFavouritesList = findViewById(R.id.rv_favourites_list);
-
-        mbLogin = findViewById(R.id.btn_sign_in);
 
         progressBar = findViewById(R.id.progressBar);
 
@@ -141,17 +132,7 @@ public class FavouritesActivity extends AppCompatActivity {
             }
         });
 
-        if (user == null) {
-            swipeRefreshLayout.setVisibility(View.GONE);
-            rvFavouritesList.setVisibility(View.GONE);
-
-            mbLogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                }
-            });
-        } else {
+        if (user != null) {
             swipeRefreshLayout.setVisibility(View.VISIBLE);
             rvFavouritesList.setVisibility(View.GONE);
             progressBar.setVisibility(View.VISIBLE);
@@ -181,8 +162,6 @@ public class FavouritesActivity extends AppCompatActivity {
                 rvFavouritesList.setVisibility(View.VISIBLE);
 
                 favouriteList.clear();
-
-                // Log.d(RESTAURANT_DATA_TAG, "onResponse: " + response);
 
                 for (int i = 0; i < response.length(); i++) {
                     try {
@@ -217,8 +196,6 @@ public class FavouritesActivity extends AppCompatActivity {
 
             @Override
             public void onError(String error) {
-                Log.e(RESTAURANT_DATA_TAG, "onError: " + error);
-
                 progressBar.setVisibility(View.GONE);
 
                 Snackbar snackbar = Snackbar.make(

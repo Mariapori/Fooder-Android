@@ -36,8 +36,6 @@ import fi.jesunmaailma.fooder.android.models.Restaurant;
 import fi.jesunmaailma.fooder.android.services.FooderDataService;
 
 public class RestaurantPage extends AppCompatActivity {
-    // VAIN virheenjäljitystä varten.
-    public static final String RESTAURANT_DATA_TAG = "TAG";
     public static final String id = "id";
     public static final String name = "name";
     public static final String image = "image";
@@ -146,11 +144,6 @@ public class RestaurantPage extends AppCompatActivity {
                                     restaurant.getId()
                             )
                     );
-                    getFavourites(String.format(
-                            "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
-                            getResources().getString(R.string.digiruokalista_api_base_url),
-                            user.getEmail()
-                    ));
                 } else {
                     getRestaurantById(
                             String.format(
@@ -173,11 +166,6 @@ public class RestaurantPage extends AppCompatActivity {
                             restaurant.getId()
                     )
             );
-            getFavourites(String.format(
-                    "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
-                    getResources().getString(R.string.digiruokalista_api_base_url),
-                    user.getEmail()
-            ));
 
             mbAddToFavourites.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -230,20 +218,24 @@ public class RestaurantPage extends AppCompatActivity {
 
                 mbAddToFavourites.setVisibility(View.VISIBLE);
                 mbRemoveFromFavourites.setVisibility(View.GONE);
-
-                getFavourites(
-                        String.format(
-                                "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
-                                getResources().getString(R.string.digiruokalista_api_base_url),
-                                user.getEmail()
-                        )
-                );
-
             }
 
             @Override
             public void onError(String error) {
-                Log.e(RESTAURANT_DATA_TAG, "onError: " + error);
+                progressBar.setVisibility(View.GONE);
+
+                Snackbar snackbar = Snackbar.make(
+                        snackBar,
+                        "Hupsista!\nRavintolan poisto suosikeista epäonnistui.",
+                        Snackbar.LENGTH_INDEFINITE
+                );
+                snackbar.setAction("Sulje", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        snackbar.dismiss();
+                    }
+                });
+                snackbar.show();
             }
         });
     }
@@ -262,34 +254,24 @@ public class RestaurantPage extends AppCompatActivity {
 
                 mbAddToFavourites.setVisibility(View.GONE);
                 mbRemoveFromFavourites.setVisibility(View.VISIBLE);
+            }
 
-                getFavourites(
-                        String.format(
-                                "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
-                                getResources().getString(R.string.digiruokalista_api_base_url),
-                                user.getEmail()
-                        )
+            @Override
+            public void onError(String error) {
+                progressBar.setVisibility(View.GONE);
+
+                Snackbar snackbar = Snackbar.make(
+                        snackBar,
+                        "Hupsista!\nRavintolan lisäys suosikkeihin epäonnistui.",
+                        Snackbar.LENGTH_INDEFINITE
                 );
-            }
-
-            @Override
-            public void onError(String error) {
-                Log.e(RESTAURANT_DATA_TAG, "onError: " + error);
-            }
-        });
-    }
-
-
-    public void getFavourites(String url) {
-        service.getUserFavourites(url, new FooderDataService.OnFavouriteDataResponse() {
-            @Override
-            public void onResponse(JSONArray response) {
-                Log.d(RESTAURANT_DATA_TAG, "onResponse: " + response.toString());
-            }
-
-            @Override
-            public void onError(String error) {
-                Log.e(RESTAURANT_DATA_TAG, "onError: " + error);
+                snackbar.setAction("Sulje", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        snackbar.dismiss();
+                    }
+                });
+                snackbar.show();
             }
         });
     }

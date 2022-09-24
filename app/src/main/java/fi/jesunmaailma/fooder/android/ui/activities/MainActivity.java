@@ -48,8 +48,6 @@ import fi.jesunmaailma.fooder.android.services.FooderDataService;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    // VAIN virheenjäljitystä varten.
-    // public static final String RESTAURANT_DATA_TAG = "TAG";
     public static final String id = "id";
     public static final String name = "name";
     public static final String image = "image";
@@ -336,13 +334,15 @@ public class MainActivity extends AppCompatActivity
                         getRestaurants(
                                 getResources().getString(R.string.digiruokalista_api_base_url) + "HaeYritykset"
                         );
-                        getFavourites(
-                                String.format(
-                                        "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
-                                        getResources().getString(R.string.digiruokalista_api_base_url),
-                                        user.getEmail()
-                                )
-                        );
+                        if (user != null) {
+                            getFavourites(
+                                    String.format(
+                                            "%sHaeKayttajanSuosikit?Kayttaja=%s&secret=AccessToken",
+                                            getResources().getString(R.string.digiruokalista_api_base_url),
+                                            user.getEmail()
+                                    )
+                            );
+                        }
                     }
                 });
                 snackbar.show();

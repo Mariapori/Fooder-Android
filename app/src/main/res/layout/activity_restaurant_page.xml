@@ -92,7 +92,8 @@
                     app:iconTint="@color/black"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView3"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:rippleColor="@color/gray" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/mb_remove_from_favourites"
@@ -113,7 +114,8 @@
                     app:iconTint="@color/black"
                     app:layout_constraintBottom_toBottomOf="@+id/imageView3"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:rippleColor="@color/gray" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
