@@ -55,6 +55,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/sw_notifications"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins"
+                android:text="Salli sovelluksen lähettää ilmoituksia"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,7 +77,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/sw_notifications">
 
                 <ImageView
                     android:id="@+id/iv_profile"
@@ -109,8 +123,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:backgroundTint="@color/white"
-                    android:padding="12dp"
                     android:fontFamily="@font/poppins_semibold"
+                    android:padding="12dp"
                     android:text="Kirjaudu ulos"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
@@ -129,8 +143,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:padding="12dp"
                     android:fontFamily="@font/poppins_semibold"
+                    android:padding="12dp"
                     android:text="Kirjaudu"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
@@ -150,8 +164,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:padding="12dp"
                     android:fontFamily="@font/poppins_semibold"
+                    android:padding="12dp"
                     android:text="Muokkaa sähköpostia"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
@@ -168,8 +182,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:padding="12dp"
                     android:fontFamily="@font/poppins_semibold"
+                    android:padding="12dp"
                     android:text="Vaihda nimi"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
@@ -186,8 +200,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:padding="12dp"
                     android:fontFamily="@font/poppins_semibold"
+                    android:padding="12dp"
                     android:text="Muokkaa salasanaa"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
@@ -205,8 +219,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="16dp"
-                    android:padding="12dp"
                     android:fontFamily="@font/poppins_semibold"
+                    android:padding="12dp"
                     android:text="Poista tili"
                     android:textAllCaps="false"
                     android:textColor="@color/black"

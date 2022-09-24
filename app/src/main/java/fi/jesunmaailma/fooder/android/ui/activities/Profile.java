@@ -4,12 +4,12 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,19 +35,23 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 import fi.jesunmaailma.fooder.android.R;
+import fi.jesunmaailma.fooder.android.services.FooderDataService;
 
 public class Profile extends AppCompatActivity {
+    public static final String TAG = "TOKEN_TAG";
     ImageView ivProfilePic;
     TextView tvUsername, tvEmail;
-    
+
     MaterialButton btnSignIn, btnSignOut, btnEditEmail, btnEditName, btnEditPassword, btnDeleteAccount;
 
     FirebaseAuth auth;
@@ -59,8 +64,10 @@ public class Profile extends AppCompatActivity {
 
     ActionBar actionBar;
     Toolbar toolbar;
-    Switch swNotifications;
+    SwitchMaterial swNotifications;
     LayoutInflater inflater;
+
+    FooderDataService service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,35 +92,15 @@ public class Profile extends AppCompatActivity {
         btnEditPassword = findViewById(R.id.btn_edit_password);
         btnDeleteAccount = findViewById(R.id.btn_delete_account);
         swNotifications = findViewById(R.id.sw_notifications);
-        if(user == null){
-            swNotifications.setVisibility(View.GONE);
-        }
-        swNotifications.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(swNotifications.isChecked()){
-                    //TODO: Notifikaatio tokenin lähetys apille.
-                    Toast.makeText(
-                            getApplicationContext(),
-                            "Ilmoitukset sallittu.",
-                            Toast.LENGTH_LONG
-                    ).show();
-                }else{
-                    //TODO: Notifikaatio tokenin poisto apin kautta.
-                    Toast.makeText(
-                            getApplicationContext(),
-                            "Ilmoitukset kielletty.",
-                            Toast.LENGTH_LONG
-                    ).show();
-                }
-            }
-        });
+
         client = GoogleSignIn.getClient(Profile.this, GoogleSignInOptions.DEFAULT_SIGN_IN);
 
         auth = FirebaseAuth.getInstance();
         analytics = FirebaseAnalytics.getInstance(this);
         database = FirebaseFirestore.getInstance();
         user = auth.getCurrentUser();
+
+        service = new FooderDataService(this);
 
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "id");
@@ -126,6 +113,7 @@ public class Profile extends AppCompatActivity {
         }
 
         if (user == null) {
+            swNotifications.setVisibility(View.GONE);
             tvUsername.setText("Hei tyyppi, et ole kirjautunut sisään.");
             tvEmail.setVisibility(View.GONE);
             btnSignOut.setVisibility(View.GONE);
@@ -135,6 +123,27 @@ public class Profile extends AppCompatActivity {
             btnEditPassword.setVisibility(View.GONE);
             btnDeleteAccount.setVisibility(View.GONE);
         } else {
+            swNotifications.setVisibility(View.VISIBLE);
+            swNotifications.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (swNotifications.isChecked()) {
+                        //TODO: Notifikaatio tokenin lähetys apille.
+                        Toast.makeText(
+                                getApplicationContext(),
+                                "Ilmoitukset sallittu.",
+                                Toast.LENGTH_LONG
+                        ).show();
+                    } else {
+                        //TODO: Notifikaatio tokenin poisto apin kautta.
+                        Toast.makeText(
+                                getApplicationContext(),
+                                "Ilmoitukset kielletty.",
+                                Toast.LENGTH_LONG
+                        ).show();
+                    }
+                }
+            });
             tvEmail.setVisibility(View.VISIBLE);
             btnSignOut.setVisibility(View.VISIBLE);
             btnSignIn.setVisibility(View.GONE);
@@ -217,7 +226,7 @@ public class Profile extends AppCompatActivity {
     public String getLastName(String fullName) {
         int index = fullName.lastIndexOf(" ");
         if (index > -1) {
-            return fullName.substring(index + 1 , fullName.length());
+            return fullName.substring(index + 1, fullName.length());
         }
         return "";
     }
@@ -324,9 +333,9 @@ public class Profile extends AppCompatActivity {
                                                         ).show();
                                                         startActivity(
                                                                 new Intent(getApplicationContext(), MainActivity.class)
-                                                        .addFlags(
-                                                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                                        ));
+                                                                        .addFlags(
+                                                                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                                                        ));
                                                         finish();
                                                     }
                                                 }
@@ -338,7 +347,7 @@ public class Profile extends AppCompatActivity {
                                             Toast.makeText(
                                                     getApplicationContext(),
                                                     "Virhe tapahtui jostain randomista syystä: " +
-                                                    e.getMessage(),
+                                                            e.getMessage(),
                                                     Toast.LENGTH_LONG
                                             ).show();
                                         }
@@ -374,9 +383,9 @@ public class Profile extends AppCompatActivity {
                                             ).show();
                                             startActivity(
                                                     new Intent(getApplicationContext(), MainActivity.class)
-                                            .addFlags(
-                                                    Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                            ));
+                                                            .addFlags(
+                                                                    Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                                            ));
                                             finish();
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
@@ -385,7 +394,7 @@ public class Profile extends AppCompatActivity {
                                             Toast.makeText(
                                                     getApplicationContext(),
                                                     "Virhe tapahtui jostain randomista syystä: " +
-                                                    e.getMessage(),
+                                                            e.getMessage(),
                                                     Toast.LENGTH_LONG
                                             ).show();
                                         }
@@ -432,14 +441,14 @@ public class Profile extends AppCompatActivity {
                                     }
 
                                     UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder()
-                                        .setDisplayName(
-                                            String.format(
-                                                "%s %s",
-                                                firstName.getText().toString(),
-                                                lastName.getText().toString()
+                                            .setDisplayName(
+                                                    String.format(
+                                                            "%s %s",
+                                                            firstName.getText().toString(),
+                                                            lastName.getText().toString()
+                                                    )
                                             )
-                                        )
-                                        .build();
+                                            .build();
 
                                     user.updateProfile(userProfileChangeRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
@@ -460,9 +469,9 @@ public class Profile extends AppCompatActivity {
                                                         ).show();
                                                         startActivity(
                                                                 new Intent(getApplicationContext(), MainActivity.class)
-                                                        .addFlags(
-                                                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                                        ));
+                                                                        .addFlags(
+                                                                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                                                        ));
                                                         finish();
                                                     }
                                                 }
@@ -474,7 +483,7 @@ public class Profile extends AppCompatActivity {
                                             Toast.makeText(
                                                     getApplicationContext(),
                                                     "Virhe tapahtui jostain randomista syystä: " +
-                                                    e.getMessage(),
+                                                            e.getMessage(),
                                                     Toast.LENGTH_LONG
                                             ).show();
                                         }
@@ -509,27 +518,27 @@ public class Profile extends AppCompatActivity {
                                     }
 
                                     UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder()
-                                        .setDisplayName(
-                                            String.format(
-                                                "%s %s",
-                                                firstName.getText().toString(),
-                                                lastName.getText().toString()
-                                            )
-                                        ).build();
+                                            .setDisplayName(
+                                                    String.format(
+                                                            "%s %s",
+                                                            firstName.getText().toString(),
+                                                            lastName.getText().toString()
+                                                    )
+                                            ).build();
 
                                     user.updateProfile(userProfileChangeRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull @NotNull Task<Void> task) {
                                             Toast.makeText(
-                                                getApplicationContext(),
-                                                "Nimi päivitetty.",
-                                                Toast.LENGTH_LONG
+                                                    getApplicationContext(),
+                                                    "Nimi päivitetty.",
+                                                    Toast.LENGTH_LONG
                                             ).show();
                                             startActivity(
-                                                new Intent(getApplicationContext(), MainActivity.class)
-                                            .addFlags(
-                                                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                            ));
+                                                    new Intent(getApplicationContext(), MainActivity.class)
+                                                            .addFlags(
+                                                                    Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                                            ));
                                             finish();
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
@@ -538,7 +547,7 @@ public class Profile extends AppCompatActivity {
                                             Toast.makeText(
                                                     getApplicationContext(),
                                                     "Virhe tapahtui jostain randomista syystä: " +
-                                                    e.getMessage(),
+                                                            e.getMessage(),
                                                     Toast.LENGTH_LONG
                                             ).show();
                                         }
@@ -622,12 +631,12 @@ public class Profile extends AppCompatActivity {
                     AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
                     builder.setTitle(
-                            String.format(
-                                    "%s\n(%s)",
-                                    document.getString("firstName"),
-                                    document.getString("email")
+                                    String.format(
+                                            "%s\n(%s)",
+                                            document.getString("firstName"),
+                                            document.getString("email")
+                                    )
                             )
-                    )
                             .setMessage(
                                     String.format(
                                             "%s\n\n%s\n\n%s",
@@ -670,12 +679,12 @@ public class Profile extends AppCompatActivity {
                     AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
                     builder.setTitle(
-                            String.format(
-                                    "%s\n(%s)",
-                                    getFirstName(Objects.requireNonNull(user.getDisplayName())),
-                                    user.getEmail()
+                                    String.format(
+                                            "%s\n(%s)",
+                                            getFirstName(Objects.requireNonNull(user.getDisplayName())),
+                                            user.getEmail()
+                                    )
                             )
-                    )
                             .setMessage(
                                     String.format(
                                             "%s\n\n%s\n\n%s",
@@ -721,7 +730,7 @@ public class Profile extends AppCompatActivity {
                 ).addFlags(
                         Intent.FLAG_ACTIVITY_NEW_TASK
                                 |
-                        Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                Intent.FLAG_ACTIVITY_CLEAR_TASK
                 )
         );
         finish();

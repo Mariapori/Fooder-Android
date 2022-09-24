@@ -45,6 +45,16 @@ public class FooderDataService {
         void onError(String error);
     }
 
+    public interface OnTokenAddedForNotificationsResponse {
+        void onResponse(JSONObject response);
+        void onError(String error);
+    }
+
+    public interface OnTokenDeletedFromNotificationsResponse {
+        void onResponse(JSONObject response);
+        void onError(String error);
+    }
+
     // GET-pyynnöt endpointteihin
     public void getRestaurants(String url, OnRestaurantDataResponse onDataResponse) {
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -101,6 +111,42 @@ public class FooderDataService {
     }
 
     // POST-pyynnöt endpointteihin
+    public void addTokenForNotifications(String url, OnTokenAddedForNotificationsResponse tokenAddedForNotificationsResponse) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                tokenAddedForNotificationsResponse.onResponse(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                tokenAddedForNotificationsResponse.onError(error.getMessage());
+            }
+        });
+
+        queue.add(objectRequest);
+    }
+
+    public void deleteTokenFromNotifications(String url, OnTokenDeletedFromNotificationsResponse tokenDeletedFromNotificationsResponse) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                tokenDeletedFromNotificationsResponse.onResponse(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                tokenDeletedFromNotificationsResponse.onError(error.getMessage());
+            }
+        });
+
+        queue.add(objectRequest);
+    }
+
     public void addRestaurantToFavourites(String url, OnFavouriteAddedRestaurantDataResponse addedRestaurantDataResponse) {
         RequestQueue queue = Volley.newRequestQueue(context);
 
@@ -122,7 +168,7 @@ public class FooderDataService {
     public void deleteRestaurantFromFavourites(String url, OnFavouriteDeletedDataResponse onDataResponse) {
         RequestQueue queue = Volley.newRequestQueue(context);
 
-        JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.POST, url, null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.POST, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 onDataResponse.onResponse(response);
@@ -134,6 +180,6 @@ public class FooderDataService {
             }
         });
 
-        queue.add(objectRequest);
+        queue.add(arrayRequest);
     }
 }
