@@ -131,26 +131,31 @@ public class Profile extends AppCompatActivity {
                         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
                             @Override
                             public void onComplete(@NonNull Task<String> task) {
-                                service.addTokenForNotifications(String.format("https://digiruokalista.com/api/v1/AddTokenForNotifications?Token=%s", task.getResult()), new FooderDataService.OnTokenAddedForNotificationsResponse() {
-                                    @Override
-                                    public void onResponse(JSONObject response) {
-                                        Toast.makeText(
-                                                getApplicationContext(),
-                                                "Ilmoitukset sallittu.",
-                                                Toast.LENGTH_LONG
-                                        ).show();
-                                    }
+                                service.addTokenForNotifications(
+                                        String.format(
+                                                "%sAddTokenForNotifications?Token=%s",
+                                                getResources().getString(R.string.digiruokalista_api_base_url),
+                                                task.getResult()
+                                        ), new FooderDataService.OnTokenAddedForNotificationsResponse() {
+                                            @Override
+                                            public void onResponse(JSONObject response) {
+                                                Toast.makeText(
+                                                        getApplicationContext(),
+                                                        "Ilmoitukset sallittu.",
+                                                        Toast.LENGTH_LONG
+                                                ).show();
+                                            }
 
-                                    @Override
-                                    public void onError(String error) {
-                                        Toast.makeText(
-                                                getApplicationContext(),
-                                                "Virhe!",
-                                                Toast.LENGTH_LONG
-                                        ).show();
-                                        swNotifications.setChecked(false);
-                                    }
-                                });
+                                            @Override
+                                            public void onError(String error) {
+                                                Toast.makeText(
+                                                        getApplicationContext(),
+                                                        "Virhe!",
+                                                        Toast.LENGTH_LONG
+                                                ).show();
+                                                swNotifications.setChecked(false);
+                                            }
+                                        });
 
                             }
                         });
@@ -158,7 +163,11 @@ public class Profile extends AppCompatActivity {
                         FirebaseMessaging.getInstance().deleteToken().addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                service.deleteTokenFromNotifications(String.format("https://digiruokalista.com/api/v1/RemoveTokenForNotifications?Token=%s", task.getResult()), new FooderDataService.OnTokenDeletedFromNotificationsResponse() {
+                                service.deleteTokenFromNotifications(String.format(
+                                        "%sRemoveTokenForNotifications?Token=%s",
+                                        getResources().getString(R.string.digiruokalista_api_base_url),
+                                        task.getResult()
+                                ), new FooderDataService.OnTokenDeletedFromNotificationsResponse() {
                                     @Override
                                     public void onResponse(JSONObject response) {
                                         Toast.makeText(
