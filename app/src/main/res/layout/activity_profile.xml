@@ -65,6 +65,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
+                <Switch
+                    android:id="@+id/sw_notifications"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:text="Salli sovelluksen lähettää ilmoituksia"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="#FFFFFF" />
+
                 <ImageView
                     android:id="@+id/iv_profile"
                     android:layout_width="128dp"

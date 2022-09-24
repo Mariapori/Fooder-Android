@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,7 +59,7 @@ public class Profile extends AppCompatActivity {
 
     ActionBar actionBar;
     Toolbar toolbar;
-
+    Switch swNotifications;
     LayoutInflater inflater;
 
     @Override
@@ -83,7 +84,30 @@ public class Profile extends AppCompatActivity {
         btnEditName = findViewById(R.id.btn_edit_name);
         btnEditPassword = findViewById(R.id.btn_edit_password);
         btnDeleteAccount = findViewById(R.id.btn_delete_account);
-
+        swNotifications = findViewById(R.id.sw_notifications);
+        if(user == null){
+            swNotifications.setVisibility(View.GONE);
+        }
+        swNotifications.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(swNotifications.isChecked()){
+                    //TODO: Notifikaatio tokenin lähetys apille.
+                    Toast.makeText(
+                            getApplicationContext(),
+                            "Ilmoitukset sallittu.",
+                            Toast.LENGTH_LONG
+                    ).show();
+                }else{
+                    //TODO: Notifikaatio tokenin poisto apin kautta.
+                    Toast.makeText(
+                            getApplicationContext(),
+                            "Ilmoitukset kielletty.",
+                            Toast.LENGTH_LONG
+                    ).show();
+                }
+            }
+        });
         client = GoogleSignIn.getClient(Profile.this, GoogleSignInOptions.DEFAULT_SIGN_IN);
 
         auth = FirebaseAuth.getInstance();
