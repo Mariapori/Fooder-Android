@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,7 +47,6 @@ import fi.jesunmaailma.fooder.android.R;
 import fi.jesunmaailma.fooder.android.services.FooderDataService;
 
 public class Profile extends AppCompatActivity {
-    public static final String TAG = "TOKEN_TAG";
     ImageView ivProfilePic;
     TextView tvUsername, tvEmail;
 
@@ -312,7 +310,7 @@ public class Profile extends AppCompatActivity {
                     dialog.show();
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                    builder.setTitle(user.getDisplayName());
+                    builder.setTitle(getFirstName(Objects.requireNonNull(user.getDisplayName())));
                     builder.setMessage("Haluatko varmasti kirjautua ulos Fooder-palvelusta?");
                     builder.setPositiveButton("Kirjaudu ulos", new DialogInterface.OnClickListener() {
                         @Override
