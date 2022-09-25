@@ -1,8 +1,10 @@
 package fi.jesunmaailma.fooder.android.ui.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,6 +45,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import fi.jesunmaailma.fooder.android.R;
 import fi.jesunmaailma.fooder.android.services.FooderDataService;
@@ -57,11 +61,10 @@ public class Profile extends AppCompatActivity {
     FirebaseUser user;
     FirebaseAnalytics analytics;
     DocumentReference documentReference;
-
     GoogleSignInClient client;
-
     ActionBar actionBar;
     Toolbar toolbar;
+    boolean notificationsEnabled = false;
     SwitchMaterial swNotifications;
     LayoutInflater inflater;
 
@@ -72,9 +75,12 @@ public class Profile extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        swNotifications = findViewById(R.id.sw_notifications);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        notificationsEnabled = sharedPref.getBoolean("notification",false);
 
         actionBar = getSupportActionBar();
 
@@ -89,7 +95,6 @@ public class Profile extends AppCompatActivity {
         btnEditName = findViewById(R.id.btn_edit_name);
         btnEditPassword = findViewById(R.id.btn_edit_password);
         btnDeleteAccount = findViewById(R.id.btn_delete_account);
-        swNotifications = findViewById(R.id.sw_notifications);
 
         client = GoogleSignIn.getClient(Profile.this, GoogleSignInOptions.DEFAULT_SIGN_IN);
 
@@ -121,6 +126,8 @@ public class Profile extends AppCompatActivity {
             btnEditPassword.setVisibility(View.GONE);
             btnDeleteAccount.setVisibility(View.GONE);
         } else {
+            swNotifications.setChecked(notificationsEnabled);
+
             swNotifications.setVisibility(View.VISIBLE);
             swNotifications.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -142,6 +149,10 @@ public class Profile extends AppCompatActivity {
                                                         "Ilmoitukset sallittu.",
                                                         Toast.LENGTH_LONG
                                                 ).show();
+                                                SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
+                                                SharedPreferences.Editor editor = sp.edit();
+                                                editor.putBoolean("notification",true);
+                                                editor.apply();
                                             }
 
                                             @Override
@@ -158,9 +169,9 @@ public class Profile extends AppCompatActivity {
                             }
                         });
                     } else {
-                        FirebaseMessaging.getInstance().deleteToken().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
                             @Override
-                            public void onComplete(@NonNull Task<Void> task) {
+                            public void onComplete(@NonNull Task<String> task) {
                                 service.deleteTokenFromNotifications(String.format(
                                         "%sRemoveTokenForNotifications?Token=%s",
                                         getResources().getString(R.string.digiruokalista_api_base_url),
@@ -173,6 +184,10 @@ public class Profile extends AppCompatActivity {
                                                 "Ilmoitukset estetty.",
                                                 Toast.LENGTH_LONG
                                         ).show();
+                                        SharedPreferences sp = getPreferences(Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = sp.edit();
+                                        editor.putBoolean("notification",false);
+                                        editor.apply();
                                     }
 
                                     @Override
