@@ -75,6 +75,7 @@ public class Profile extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        swNotifications = findViewById(R.id.sw_notifications);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -94,7 +95,6 @@ public class Profile extends AppCompatActivity {
         btnEditName = findViewById(R.id.btn_edit_name);
         btnEditPassword = findViewById(R.id.btn_edit_password);
         btnDeleteAccount = findViewById(R.id.btn_delete_account);
-        swNotifications = findViewById(R.id.sw_notifications);
 
         client = GoogleSignIn.getClient(Profile.this, GoogleSignInOptions.DEFAULT_SIGN_IN);
 
