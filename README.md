@@ -1,7 +1,7 @@
 # Fooder
 Ruokalistat diginä Androidille.
 
-![Fooder-sovellus saatavilla Play Kaupassa](https://play.google.com/intl/en_us/badges/static/images/badges/fi_badge_web_generic.png)
+[<img src="https://play.google.com/intl/en_us/badges/static/images/badges/fi_badge_web_generic.png">](https://play.google.com/store/apps/details?id=fi.jesunmaailma.fooder.android)
 
 Oletko joskus joutunut selaamaan ravintoloiden Facebook-sivuja löytääkseen sen tietyn ruokalistan ja zoomaamaan toDELLA pieniä ruokalistoja? Nyt on monta huolta vähemmän!
 
