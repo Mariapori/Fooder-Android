@@ -1,6 +1,8 @@
 # Fooder
 Ruokalistat diginä Androidille.
 
+![Fooder-sovellus saatavilla Play Kaupassa](https://play.google.com/intl/en_us/badges/static/images/badges/fi_badge_web_generic.png)
+
 Oletko joskus joutunut selaamaan ravintoloiden Facebook-sivuja löytääkseen sen tietyn ruokalistan ja zoomaamaan toDELLA pieniä ruokalistoja? Nyt on monta huolta vähemmän!
 
 Fooder on uuden sukupolven ruokalistasovellus Androidille, jota tekee amista suorittava [JTG69YT AKA Jesse Keskelä](https://github.com/JTG69YT).
