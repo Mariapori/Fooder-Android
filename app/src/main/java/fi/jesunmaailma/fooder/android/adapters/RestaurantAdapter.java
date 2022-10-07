@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,15 +21,17 @@ import fi.jesunmaailma.fooder.android.services.FooderDataService;
 import fi.jesunmaailma.fooder.android.ui.activities.MainActivity;
 import fi.jesunmaailma.fooder.android.ui.activities.RestaurantPage;
 
-public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ViewHolder> {
+public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ViewHolder> implements Filterable {
     public static final String RESTAURANT_DATA_TAG = "TAG";
     List<Restaurant> restaurantList;
+    List<Restaurant> restaurantListFull;
     List<Favourite> favouriteList;
     View view;
 
     public RestaurantAdapter(List<Restaurant> restaurantList, List<Favourite> favouriteList) {
         this.restaurantList = restaurantList;
         this.favouriteList = favouriteList;
+        restaurantListFull = new ArrayList<>(restaurantList);
     }
 
     @NonNull
@@ -61,6 +65,42 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     public int getItemCount() {
         return restaurantList.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return restaurantFilter;
+    }
+
+    private Filter restaurantFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Restaurant> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(restaurantListFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (Restaurant restaurant : restaurantListFull) {
+                    if (restaurant.getName().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(restaurant);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            restaurantList.clear();
+            restaurantList.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView restaurantName;
