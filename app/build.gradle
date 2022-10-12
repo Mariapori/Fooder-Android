@@ -6,12 +6,12 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 33
 
     defaultConfig {
         applicationId "fi.jesunmaailma.fooder.android"
         minSdk 21
-        targetSdk 31
+        targetSdk 33
         versionCode 2022107
         versionName "2022.10.7"
 
