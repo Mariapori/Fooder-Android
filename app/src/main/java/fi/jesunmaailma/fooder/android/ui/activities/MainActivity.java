@@ -208,6 +208,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        swipeRefreshLayout.setVisibility(View.VISIBLE);
+        rvRestaurantList.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
         getRestaurants(getResources().getString(R.string.digiruokalista_api_base_url) + "HaeYritykset");
         if (user != null) {
             getFavourites(

@@ -5,13 +5,15 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -47,19 +49,20 @@ public class RestaurantPage extends AppCompatActivity {
     Toolbar toolbar;
 
     SwipeRefreshLayout swipeRefreshLayout;
-    TextView tvRestaurantName, tvRestaurantAddress;
+    TextView tvRestaurantName, tvRestaurantAddress, tvAltText;
     RecyclerView recyclerView;
 
-    // Firebase Auth
+    // Firebase-tavaraa
     FirebaseAuth auth;
     FirebaseUser user;
     FirebaseAnalytics analytics;
 
     ProgressBar progressBar;
 
-    MaterialButton mbAddToFavourites, mbRemoveFromFavourites;
+    MaterialButton mbAddToFavourites, mbRemoveFromFavourites, mbAddLike, mbRemoveLike;
 
     CoordinatorLayout snackBar;
+    CardView cvAltTextContainer;
 
     List<Food> foodList;
     FoodAdapter foodAdapter;
@@ -84,11 +87,12 @@ public class RestaurantPage extends AppCompatActivity {
         }
 
         restaurant = (Restaurant) getIntent().getSerializableExtra("restaurant");
-        AlreadyFavorite = (boolean) getIntent().getBooleanExtra("isFavorite", false);
+        AlreadyFavorite = getIntent().getBooleanExtra("isFavorite", false);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
 
         tvRestaurantName = findViewById(R.id.tv_restaurant_name);
         tvRestaurantAddress = findViewById(R.id.tv_restaurant_address);
+        tvAltText = findViewById(R.id.tv_alt_text);
 
         recyclerView = findViewById(R.id.categories_list);
 
@@ -96,6 +100,10 @@ public class RestaurantPage extends AppCompatActivity {
 
         mbAddToFavourites = findViewById(R.id.mb_add_to_favourites);
         mbRemoveFromFavourites = findViewById(R.id.mb_remove_from_favourites);
+        mbAddLike = findViewById(R.id.mb_add_like);
+        mbRemoveLike = findViewById(R.id.mb_remove_like);
+
+        cvAltTextContainer = findViewById(R.id.cvAltTextContainer);
 
         if (AlreadyFavorite) {
             mbAddToFavourites.setVisibility(View.GONE);
@@ -193,6 +201,40 @@ public class RestaurantPage extends AppCompatActivity {
                     ));
                 }
             });
+
+            mbAddLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO: Lisää tykkäyslogiikka tähän.
+                    mbAddLike.setVisibility(View.GONE);
+                    mbRemoveLike.setVisibility(View.VISIBLE);
+
+                    Snackbar snackbar = Snackbar.make(
+                            snackBar,
+                            "Tämä ei tee vielä mitään.",
+                            Snackbar.LENGTH_LONG
+                    );
+                    snackbar.setDuration(5000);
+                    snackbar.show();
+                }
+            });
+
+            mbRemoveLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO: Lisää tykkäyksen poistologiikka tähän.
+                    mbRemoveLike.setVisibility(View.GONE);
+                    mbAddLike.setVisibility(View.VISIBLE);
+
+                    Snackbar snackbar = Snackbar.make(
+                            snackBar,
+                            "Tämä ei tee vielä mitään.",
+                            Snackbar.LENGTH_LONG
+                    );
+                    snackbar.setDuration(5000);
+                    snackbar.show();
+                }
+            });
         } else {
             getRestaurantById(
                     String.format(
@@ -204,6 +246,8 @@ public class RestaurantPage extends AppCompatActivity {
 
             mbAddToFavourites.setVisibility(View.GONE);
             mbRemoveFromFavourites.setVisibility(View.GONE);
+            mbAddLike.setVisibility(View.GONE);
+            mbRemoveLike.setVisibility(View.GONE);
         }
     }
 
@@ -300,6 +344,33 @@ public class RestaurantPage extends AppCompatActivity {
                                     response.getString("kaupunki")
                             )
                     );
+
+                    tvRestaurantName.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            try {
+                                Uri mapsUri = Uri.parse(
+                                        String.format(
+                                                "geo:0,0?q=%s",
+                                                response.getString("nimi")
+                                        )
+                                );
+
+                                Intent mapIntent = new Intent(Intent.ACTION_VIEW, mapsUri);
+                                mapIntent.setPackage("com.google.android.apps.maps");
+                                startActivity(mapIntent);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+                    if (response.getString("vapaaTeksti").contains("null")) {
+                        cvAltTextContainer.setVisibility(View.GONE);
+                    } else {
+                        cvAltTextContainer.setVisibility(View.VISIBLE);
+                        tvAltText.setText(response.getString("vapaaTeksti"));
+                    }
 
                     JSONObject foodMenuData = response.getJSONObject("ruokalista");
 

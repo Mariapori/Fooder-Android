@@ -78,7 +78,7 @@ public class InfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 int toolbarColor = getResources().getColor(R.color.green);
-                String githubRepoUrl = "https://github.com/JTG69YT/Fooder-Android";
+                String githubRepoUrl = "https://github.com/TheIsoJ/Fooder-Android";
 
                 CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                 builder.setShowTitle(true);

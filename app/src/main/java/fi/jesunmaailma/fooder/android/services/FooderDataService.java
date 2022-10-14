@@ -40,6 +40,11 @@ public class FooderDataService {
         void onError(String error);
     }
 
+    public interface OnLikesDataResponse {
+        void onResponse(JSONArray response);
+        void onError(String error);
+    }
+
     public interface OnFavouriteDeletedDataResponse {
         void onResponse(JSONArray response);
         void onError(String error);
@@ -51,6 +56,16 @@ public class FooderDataService {
     }
 
     public interface OnTokenDeletedFromNotificationsResponse {
+        void onResponse(JSONObject response);
+        void onError(String error);
+    }
+
+    public interface OnLikeAddedResponse {
+        void onResponse(JSONObject response);
+        void onError(String error);
+    }
+
+    public interface OnLikeRemovedResponse {
         void onResponse(JSONObject response);
         void onError(String error);
     }
@@ -86,6 +101,24 @@ public class FooderDataService {
             @Override
             public void onErrorResponse(VolleyError error) {
                 onDataResponse.onError(error.getMessage());
+            }
+        });
+
+        queue.add(objectRequest);
+    }
+
+    public void getLikes(String url, OnLikesDataResponse onLikesDataResponse) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                onLikesDataResponse.onResponse(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                onLikesDataResponse.onError(error.getMessage());
             }
         });
 
@@ -181,5 +214,41 @@ public class FooderDataService {
         });
 
         queue.add(arrayRequest);
+    }
+
+    public void addLike(String url, OnLikeAddedResponse onLikeAddedResponse) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                onLikeAddedResponse.onResponse(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                onLikeAddedResponse.onError(error.getMessage());
+            }
+        });
+
+        queue.add(objectRequest);
+    }
+
+    public void removeLike(String url, OnLikeRemovedResponse onLikeRemovedResponse) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                onLikeRemovedResponse.onResponse(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                onLikeRemovedResponse.onError(error.getMessage());
+            }
+        });
+
+        queue.add(objectRequest);
     }
 }

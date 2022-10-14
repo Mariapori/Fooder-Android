@@ -73,64 +73,128 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/pizza" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/mb_add_to_favourites"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="Lisää suosikkeihin"
-                    android:textAllCaps="true"
-                    android:textColor="@color/black"
-                    android:textSize="12sp"
-                    android:translationY="25dp"
-                    android:visibility="visible"
-                    app:backgroundTint="@color/white"
-                    app:cornerRadius="100dp"
-                    app:icon="@drawable/ic_favorite_border"
-                    app:iconGravity="textStart"
-                    app:iconPadding="12dp"
-                    app:iconTint="@color/black"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+                <LinearLayout
+                    android:id="@+id/linearLayout5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:rippleColor="@color/gray" />
+                    app:layout_constraintTop_toBottomOf="@+id/imageView3">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/mb_remove_from_favourites"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="Poista suosikeista"
-                    android:textAllCaps="true"
-                    android:textColor="@color/black"
-                    android:textSize="12sp"
-                    android:translationY="25dp"
-                    android:visibility="gone"
-                    app:backgroundTint="@color/white"
-                    app:cornerRadius="100dp"
-                    app:icon="@drawable/ic_favorite"
-                    app:iconGravity="textStart"
-                    app:iconPadding="12dp"
-                    app:iconTint="@color/black"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:rippleColor="@color/gray" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/mb_add_to_favourites"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:paddingLeft="0dp"
+                        android:paddingTop="12dp"
+                        android:paddingRight="0dp"
+                        android:paddingBottom="12dp"
+                        android:text="Lisää suosikkeihin"
+                        android:textAllCaps="true"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:visibility="visible"
+                        app:backgroundTint="@color/white"
+                        app:cornerRadius="100dp"
+                        app:icon="@drawable/ic_favorite_border"
+                        app:iconGravity="textStart"
+                        app:iconPadding="8dp"
+                        app:iconTint="@color/black"
+                        app:rippleColor="@color/gray" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/mb_remove_from_favourites"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:paddingLeft="0dp"
+                        android:paddingTop="12dp"
+                        android:paddingRight="0dp"
+                        android:paddingBottom="12dp"
+                        android:text="Poista suosikeista"
+                        android:textAllCaps="true"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:visibility="gone"
+                        app:backgroundTint="@color/white"
+                        app:cornerRadius="100dp"
+                        app:icon="@drawable/ic_favorite"
+                        app:iconGravity="textStart"
+                        app:iconPadding="8dp"
+                        app:iconTint="@color/black"
+                        app:rippleColor="@color/gray" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/mb_add_like"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="8dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:paddingLeft="0dp"
+                        android:paddingTop="12dp"
+                        android:paddingRight="0dp"
+                        android:paddingBottom="12dp"
+                        android:text="Tykkää"
+                        android:textAllCaps="true"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:visibility="visible"
+                        app:backgroundTint="@color/white"
+                        app:cornerRadius="100dp"
+                        app:icon="@drawable/ic_like"
+                        app:iconGravity="textStart"
+                        app:iconPadding="8dp"
+                        app:iconTint="@color/black"
+                        app:rippleColor="@color/gray" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/mb_remove_like"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="8dp"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:paddingLeft="0dp"
+                        android:paddingTop="12dp"
+                        android:paddingRight="0dp"
+                        android:paddingBottom="12dp"
+                        android:text="Poista tykkäys"
+                        android:textAllCaps="true"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:visibility="gone"
+                        app:backgroundTint="@color/white"
+                        app:cornerRadius="100dp"
+                        app:icon="@drawable/ic_liked"
+                        app:iconGravity="textStart"
+                        app:iconPadding="12dp"
+                        app:iconTint="@color/black"
+                        app:rippleColor="@color/gray" />
+                </LinearLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView3">
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
 
                     <TextView
                         android:id="@+id/tv_restaurant_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="32dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/poppins_bold"
                         android:text="Ravintolan nimi"
@@ -153,6 +217,51 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_restaurant_name" />
 
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cvAltTextContainer"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:visibility="gone"
+                        app:cardBackgroundColor="@color/gray"
+                        app:cardCornerRadius="32dp"
+                        app:cardElevation="12dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_restaurant_address">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:id="@+id/imageView7"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginBottom="16dp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/ic_info" />
+
+                            <TextView
+                                android:id="@+id/tv_alt_text"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginEnd="16dp"
+                                android:fontFamily="@font/poppins"
+                                android:text="TextView"
+                                android:textColor="@color/white"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/imageView7"
+                                app:layout_constraintTop_toTopOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.cardview.widget.CardView>
+
                     <TextView
                         android:id="@+id/textView8"
                         android:layout_width="wrap_content"
@@ -164,7 +273,7 @@
                         android:textColor="@color/white"
                         android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_restaurant_address" />
+                        app:layout_constraintTop_toBottomOf="@+id/cvAltTextContainer" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/categories_list"
