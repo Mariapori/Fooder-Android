@@ -14,3 +14,6 @@ Pyydän ystävällisesti teiltä yhteistyötä ja apuja tähän projektiin forkk
 
 ## 🙏 Krediitit
 Krediitit menevät Digiruokalista.com:n tekijälle ja ylläpitäjälle [Mariapori](https://github.com/Mariapori) ja kaikille muillekin, jotka tulevat auttamaan projektin kanssa ja saavuttamaan sen, mihin se on alunperin tarkoitettu, eli helpottamaan ruokalistojen ajan tasalla pysymistä ja eliminoimaan paremmassa tapauksessa koko paperisotkut (eli paperiset ruokalistat).
+
+## Lisenssi
+Tämä repo on varustettu MIT-lisenssillä, joka sallii vapaan ohjelmiston käytön "AS IS" eli ilman takeita sovelluksen toimivuudesta ja kaikesta muusta, jonka voi lukea [tästä](https://github.com/TheIsoJ/Fooder-Android/tree/main/LICENSE).
