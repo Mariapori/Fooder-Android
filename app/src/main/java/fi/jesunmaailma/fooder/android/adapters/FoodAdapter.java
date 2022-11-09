@@ -52,6 +52,12 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> im
             holder.categoryName.setEnabled(false);
         }
         holder.foodName.setText(food.getName());
+        holder.foodPrice.setText(
+            String.format(
+                "%s0 €",
+                food.getPrice()
+            )
+        )
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,11 +111,13 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> im
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView foodName;
+        TextView foodPrice;
         TextView categoryName;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             foodName = itemView.findViewById(R.id.food_name);
+            foodPrice = itemView.findViewById(R.id.food_price);
             categoryName = itemView.findViewById(R.id.categoryName);
         }
     }
