@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -59,9 +60,22 @@ public class FoodDetails extends AppCompatActivity {
                         "%s · %s0 €",
                         food.getName(),
                         food.getPrice()
-                )
+                ).replace(".", ",")
         );
-        tvFoodDescription.setText(food.getDescription());
+
+        if (food.getDescription().contains("null")) {
+            tvFoodDescription.setText(
+                    String.format(
+                            "%s\n%s",
+                            "Tällä ruualla ei ole kuvausta.",
+                            "Kyseessä voi olla lisuke/annos, jolle ei ole annettu kuvausta."
+                    )
+            );
+            tvFoodDescription.setTypeface(tvFoodDescription.getTypeface(), Typeface.ITALIC);
+        } else {
+            tvFoodDescription.setText(food.getDescription());
+            tvFoodDescription.setTypeface(tvFoodDescription.getTypeface(), Typeface.NORMAL);
+        }
     }
 
     @Override

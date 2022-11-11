@@ -56,8 +56,8 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> im
             String.format(
                 "%s0 €",
                 food.getPrice()
-            )
-        )
+            ).replace(".", ",")
+        );
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
