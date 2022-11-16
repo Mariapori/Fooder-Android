@@ -40,10 +40,10 @@ public class FooderDataService {
         void onError(String error);
     }
 
-    public interface OnLikesDataResponse {
+    /* public interface OnLikesDataResponse {
         void onResponse(JSONArray response);
         void onError(String error);
-    }
+    } */
 
     public interface OnFavouriteDeletedDataResponse {
         void onResponse(JSONArray response);
@@ -60,7 +60,7 @@ public class FooderDataService {
         void onError(String error);
     }
 
-    public interface OnLikeAddedResponse {
+    /* public interface OnLikeAddedResponse {
         void onResponse(JSONObject response);
         void onError(String error);
     }
@@ -68,7 +68,7 @@ public class FooderDataService {
     public interface OnLikeRemovedResponse {
         void onResponse(JSONObject response);
         void onError(String error);
-    }
+    } */
 
     // GET-pyynnöt endpointteihin
     public void getRestaurants(String url, OnRestaurantDataResponse onDataResponse) {
@@ -107,7 +107,7 @@ public class FooderDataService {
         queue.add(objectRequest);
     }
 
-    public void getLikes(String url, OnLikesDataResponse onLikesDataResponse) {
+    /* public void getLikes(String url, OnLikesDataResponse onLikesDataResponse) {
         RequestQueue queue = Volley.newRequestQueue(context);
 
         JsonArrayRequest objectRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -123,7 +123,7 @@ public class FooderDataService {
         });
 
         queue.add(objectRequest);
-    }
+    } */
 
     public void getUserFavourites(String url, OnFavouriteDataResponse favouriteDataResponse) {
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -216,7 +216,7 @@ public class FooderDataService {
         queue.add(arrayRequest);
     }
 
-    public void addLike(String url, OnLikeAddedResponse onLikeAddedResponse) {
+    /* public void addLike(String url, OnLikeAddedResponse onLikeAddedResponse) {
         RequestQueue queue = Volley.newRequestQueue(context);
 
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
@@ -250,5 +250,5 @@ public class FooderDataService {
         });
 
         queue.add(objectRequest);
-    }
+    } */
 }
