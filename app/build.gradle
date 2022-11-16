@@ -12,8 +12,8 @@ android {
         applicationId "fi.jesunmaailma.fooder.android"
         minSdk 21
         targetSdk 33
-        versionCode 20221111
-        versionName "2022.11.11"
+        versionCode 20221116
+        versionName "2022.11.16"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
