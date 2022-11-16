@@ -435,31 +435,8 @@ public class RestaurantPage extends AppCompatActivity {
             }
         });
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.toolbar_menu, menu);
-
-        MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) searchItem.getActionView();
-
-        searchView.setQueryHint("Hae ruokaa...");
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                foodAdapter.getFilter().filter(newText);
-                return false;
-            }
-        });
-
-        return true;
-    }
+    
+    // TODO: Hakutoiminto on vielä epäkunnossa. Korjataan kun ehditään.
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
