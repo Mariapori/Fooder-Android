@@ -19,16 +19,14 @@ import fi.jesunmaailma.fooder.android.models.Food;
 import fi.jesunmaailma.fooder.android.models.Restaurant;
 import fi.jesunmaailma.fooder.android.ui.activities.FoodDetails;
 
-public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> implements Filterable {
+public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
     List<Food> foodList;
-    List<Food> foodListFull;
     View view;
 
     Food food;
 
     public FoodAdapter(List<Food> foodList) {
         this.foodList = foodList;
-        foodListFull = new ArrayList<>(foodList);
     }
 
     @NonNull
@@ -72,42 +70,6 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> im
     public int getItemCount() {
         return foodList.size();
     }
-
-    @Override
-    public Filter getFilter() {
-        return foodFilter;
-    }
-
-    private Filter foodFilter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            List<Food> filteredList = new ArrayList<>();
-
-            if (constraint == null || constraint.length() == 0) {
-                filteredList.addAll(foodListFull);
-            } else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
-
-                for (Food food : foodListFull) {
-                    if (food.getName().toLowerCase().contains(filterPattern)) {
-                        filteredList.add(food);
-                    }
-                }
-            }
-
-            FilterResults results = new FilterResults();
-            results.values = filteredList;
-
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            foodList.clear();
-            foodList.addAll((List) results.values);
-            notifyDataSetChanged();
-        }
-    };
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView foodName;
