@@ -5,7 +5,8 @@ import java.io.Serializable;
 public class Food implements Serializable {
     public String name;
     public String description;
-    public String category;
+    public String categoryName;
+    public String categoryDescription;
     public double price;
     public boolean isFood;
     public boolean isVegan;
@@ -31,12 +32,20 @@ public class Food implements Serializable {
         this.isVegan = isVegan;
     }
 
-    public void setCategory(String category){
-        this.category = category;
+    public void setCategoryName(String categoryName){
+        this.categoryName = categoryName;
     }
 
-    public String getCategory(){
-        return category;
+    public String getCategoryName(){
+        return categoryName;
+    }
+
+    public String getCategoryDescription() {
+        return categoryDescription;
+    }
+
+    public void setCategoryDescription(String categoryDescription) {
+        this.categoryDescription = categoryDescription;
     }
 
     public void setName(String name) {

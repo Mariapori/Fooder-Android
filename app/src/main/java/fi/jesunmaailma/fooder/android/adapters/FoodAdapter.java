@@ -1,6 +1,7 @@
 package fi.jesunmaailma.fooder.android.adapters;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,19 +43,31 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         food = foodList.get(position);
 
-        if(food.getListPos() == 0){
-            holder.categoryName.setEnabled(true);
-            holder.categoryName.setText(food.getCategory());
-        }else{
-            holder.categoryName.setText("");
-            holder.categoryName.setEnabled(false);
+        if (food.getListPos() == 0) {
+            holder.categoryName.setVisibility(View.VISIBLE);
+            holder.categoryName.setText(food.getCategoryName());
+            holder.categoryDescription.setVisibility(View.VISIBLE);
+
+            if (food.getCategoryDescription().contains("null")) {
+                holder.categoryDescription.setText("Tällä kategorialla ei ole kuvausta.");
+                holder.categoryDescription.setTypeface(holder.categoryDescription.getTypeface(), Typeface.ITALIC);
+            } else {
+                holder.categoryDescription.setText(food.getCategoryDescription());
+                holder.categoryDescription.setTypeface(holder.categoryDescription.getTypeface(), Typeface.NORMAL);
+            }
+
+        } else {
+            holder.categoryName.setText(null);
+            holder.categoryName.setVisibility(View.GONE);
+            holder.categoryDescription.setText(null);
+            holder.categoryDescription.setVisibility(View.GONE);
         }
         holder.foodName.setText(food.getName());
         holder.foodPrice.setText(
-            String.format(
-                "%s0 €",
-                food.getPrice()
-            ).replace(".", ",")
+                String.format(
+                        "%s0 €",
+                        food.getPrice()
+                ).replace(".", ",")
         );
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,12 +88,14 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
         TextView foodName;
         TextView foodPrice;
         TextView categoryName;
+        TextView categoryDescription;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             foodName = itemView.findViewById(R.id.food_name);
             foodPrice = itemView.findViewById(R.id.food_price);
             categoryName = itemView.findViewById(R.id.categoryName);
+            categoryDescription = itemView.findViewById(R.id.categoryDescription);
         }
     }
 }

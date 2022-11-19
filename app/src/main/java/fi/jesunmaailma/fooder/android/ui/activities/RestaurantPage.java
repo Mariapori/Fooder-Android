@@ -3,7 +3,6 @@ package fi.jesunmaailma.fooder.android.ui.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -14,8 +13,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -387,7 +384,8 @@ public class RestaurantPage extends AppCompatActivity {
 
                                 food.setListPos(ii);
                                 food.setName(foodData.getString("nimi"));
-                                food.setCategory(categoryData.getString("nimi"));
+                                food.setCategoryName(categoryData.getString("nimi"));
+                                food.setCategoryDescription(categoryData.getString("kuvaus"));
                                 food.setDescription(foodData.getString("kuvaus"));
                                 food.setPrice(foodData.getDouble("hinta"));
                                 food.setIsFood(foodData.getBoolean("annos"));
