@@ -7,6 +7,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.appcheck.FirebaseAppCheck;
+import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
 
 public class LaunchActivity extends AppCompatActivity {
     public static final String id = "id";
@@ -18,6 +21,13 @@ public class LaunchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        FirebaseApp.initializeApp(this);
+        
+				FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
+				
+				firebaseAppCheck.installAppCheckProviderFactory(
+        PlayIntegrityAppCheckProviderFactory.getInstance());
 
         analytics = FirebaseAnalytics.getInstance(this);
 
