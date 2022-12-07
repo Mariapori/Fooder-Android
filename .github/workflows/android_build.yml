@@ -16,9 +16,6 @@ jobs:
           
       - name: Anna luvat
         run: chmod +x ./gradlew
-        
-      - name: Rakenna projekti
-        run: ./gradlew build
 
       - name: Rakenna AAB
         run: ./gradlew bundleRelease
