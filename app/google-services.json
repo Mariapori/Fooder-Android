@@ -1,0 +1,109 @@
+{
+  "project_info": {
+    "project_number": "963601714063",
+    "firebase_url": "https://finnplace-android.firebaseio.com",
+    "project_id": "finnplace-android",
+    "storage_bucket": "finnplace-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963601714063:android:f1b363ca6e6da3540a99fa",
+        "android_client_info": {
+          "package_name": "fi.jesunmaailma.fooder.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "963601714063-7dpoflp0o0mr1q5tnm0p1j4tp2aedhrq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fi.jesunmaailma.fooder.android",
+            "certificate_hash": "143ac7c20fe8f5f0475dc7770227e66f66358c3e"
+          }
+        },
+        {
+          "client_id": "963601714063-grsaabbj21nt6r7nabrkv5cr9q27tljp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fi.jesunmaailma.fooder.android",
+            "certificate_hash": "16b7ed21d28de4f9046022aac7ec58df4482c1e8"
+          }
+        },
+        {
+          "client_id": "963601714063-mbfkpodo6drr084b87s6tv5baecp3odp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fi.jesunmaailma.fooder.android",
+            "certificate_hash": "5b279102a0bf6419c2b2aef76624a38027ac8e13"
+          }
+        },
+        {
+          "client_id": "963601714063-0bcq44vdoulbn7u83rhj1ij9onfsf3rc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD19iJDatmcVQx5YpSntw5f5ktnmnHR-mk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "963601714063-0bcq44vdoulbn7u83rhj1ij9onfsf3rc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963601714063:android:fd2a5864daa473590a99fa",
+        "android_client_info": {
+          "package_name": "fi.jesunmaailma.supliikki"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "963601714063-eialloriet0mivfktg3pest7bakpjhfp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fi.jesunmaailma.supliikki",
+            "certificate_hash": "143ac7c20fe8f5f0475dc7770227e66f66358c3e"
+          }
+        },
+        {
+          "client_id": "963601714063-psl0m513m717pndfjtro44o97jlnhk9g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fi.jesunmaailma.supliikki",
+            "certificate_hash": "e7e0f128caab46f81ef5be68b4340d3822e09cc0"
+          }
+        },
+        {
+          "client_id": "963601714063-0bcq44vdoulbn7u83rhj1ij9onfsf3rc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD19iJDatmcVQx5YpSntw5f5ktnmnHR-mk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "963601714063-0bcq44vdoulbn7u83rhj1ij9onfsf3rc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
