@@ -16,9 +16,6 @@ jobs:
           
       - name: Anna luvat
         run: chmod +x ./gradlew
-          
-      - name: Pyöritä testit
-        run: ./gradlew test
         
       - name: Rakenna projekti
         run: ./gradlew assemble
