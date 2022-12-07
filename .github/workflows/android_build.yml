@@ -11,6 +11,11 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: "11"
+          distribution: "temurin"
+          cache: gradle
+          
+      - name: Anna luvat
+        run: chmod +x ./gradlew
           
       - name: Pyöritä testit
         run: ./gradlew test
