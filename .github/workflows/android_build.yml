@@ -1,0 +1,19 @@
+name: Android-sovelluksen rakennus
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v1
+      
+      - name: Asenna JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: "11"
+          
+      - name: Pyöritä testit
+        run: ./gradlew test
+        
+      - name: Rakenna projekti
+        run: ./gradlew assemble
