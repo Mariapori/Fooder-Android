@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/green"
+    android:background="@color/blue"
     tools:context=".ui.activities.RegisterActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -19,14 +19,14 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:contentScrim="@color/green"
+            app:contentScrim="@color/blue"
             app:toolbarId="@+id/toolbar">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/green"
+                android:background="@color/blue"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
             <TextView

@@ -5,7 +5,7 @@
     android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/green"
+    android:background="@color/blue"
     tools:ignore="SpeakableTextPresentCheck">
 
     <include
@@ -17,7 +17,7 @@
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/menu"
         android:layout_gravity="start"
-        android:background="@color/green"
+        android:background="@color/blue"
         app:itemRippleColor="@color/white"
         app:subheaderColor="@color/white"
         app:itemIconTint="@color/white"
